@@ -1,14 +1,15 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.css';
-
-import NxWelcome from './nx-welcome';
+import { Ui } from '@silva-school-frontend/ui';
+// import styles from './app.module.css';
+// import NxWelcome from './nx-welcome';
 
 export function App() {
   return (
     <>
-      <NxWelcome title="silva-school-frontend" />
+      <Ui />
+      {/* <NxWelcome title="silva-school-frontend" />
 
-      <div />
+      <div /> */}
     </>
   );
 }
