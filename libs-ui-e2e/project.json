@@ -1,0 +1,30 @@
+{
+  "name": "libs-ui-e2e",
+  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs-ui-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "libs-ui-e2e/cypress.config.ts",
+        "devServerTarget": "libs-ui:storybook",
+        "testingType": "e2e"
+      },
+      "configurations": {
+        "ci": {
+          "devServerTarget": "libs-ui:storybook:ci"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs-ui-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["libs-ui"]
+}
