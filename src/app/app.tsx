@@ -1,11 +1,11 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { functions } from "@silva-school-frontend/libs/ui";
+import { Ui } from "@silva-school-frontend/ui";
 
 export function App() {
-  functions();
+  // functions();
   return (
     <>
-      hello
+      <Ui />
       {/* <Avatar /> */}
     </>
   );
