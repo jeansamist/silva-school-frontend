@@ -15,6 +15,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@silva-school-frontend/functions": ["libs/functions/src/index.ts"],
+      "@silva-school-frontend/hooks": ["libs/hooks/src/index.ts"],
+      "@silva-school-frontend/models": ["libs/models/src/index.ts"],
       "@silva-school-frontend/ui": ["libs/ui/src/index.ts"]
     }
   },
