@@ -1,14 +1,15 @@
 import type { ComponentStory, ComponentMeta } from "@storybook/react";
-import { Avatar } from "./../Avatar";
-const Story: ComponentMeta<typeof Avatar> = {
-  component: Avatar,
-  title: "Atoms/Avatar",
+import { Checkbox } from "./../Checkbox";
+const Story: ComponentMeta<typeof Checkbox> = {
+  component: Checkbox,
+  title: "Atoms/Checkbox",
 };
 export default Story;
 
-const Template: ComponentStory<typeof Avatar> = (args) => <Avatar {...args} />;
+const Template: ComponentStory<typeof Checkbox> = (args) => <Checkbox {...args} />;
 
 export const Default = Template.bind({});
+
 export const Disabled = Template.bind({});
 Disabled.args = {
   disabled: true,
@@ -23,13 +24,5 @@ Medium.args = {
 };
 export const Big = Template.bind({});
 Big.args = {
-  size: "big",
-};
-export const Large = Template.bind({});
-Large.args = {
-  size: "large",
-};
-export const HyperLarge = Template.bind({});
-HyperLarge.args = {
-  size: "hyperlarge",
+  size: "big  ",
 };
