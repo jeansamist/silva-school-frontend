@@ -856,7 +856,6 @@ responsive;
     z-index: 3;
     position: absolute;
     bottom: 0;
-    right: 0;
     transform: translateY(calc(100% + 0.5em));
     background: var(--backgroundLight);
     max-width: 300px;
@@ -864,6 +863,14 @@ responsive;
     box-shadow: 0 2px 4px var(--shadow);
     border-radius: var(--borderRadius);
     border-bottom: 1px solid var(--border);
+  }
+
+  .dropdown-container.dropdown-position-left>.dropdown {
+    left: 0;
+  }
+
+  .dropdown-container.dropdown-position-right>.dropdown {
+    right: 0;
   }
 
   .dropdown-container>.dropdown>.dropdown-element {
