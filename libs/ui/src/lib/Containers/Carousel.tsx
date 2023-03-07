@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, FunctionComponent, CSSProperties, useState, useEffect, useRef, ReactElement } from "react";
+import React, { PropsWithChildren, FunctionComponent, CSSProperties, useState, useEffect, useRef } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
 export type CarouselProps = PropsWithChildren<{
   className?: string;
@@ -61,11 +61,14 @@ export const Carousel: FunctionComponent<CarouselProps> = ({ children, slidesVis
         className="flex slides-container"
         style={{ width: slidesContainerWidth + "%", transform: `translateX(-${slideWidth * index}%)` }}
       >
-        {React.Children.map(children, (child: ReactElement, i: number) => (
-          <div ref={slideRef} key={i} className="slide" style={{ width: slideWidth + "%" }}>
-            <child.type {...child.props} />
-          </div>
-        ))}
+        {children
+          ? // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            React.Children.map(children, (child: any, i: number) => (
+              <div ref={slideRef} key={i} className="slide" style={{ width: slideWidth + "%" }}>
+                {"props" in child && "type" in child ? <child.type {...child?.props} /> : ""}
+              </div>
+            ))
+          : ""}
       </div>
       <div className="controls">
         <button onClick={prev} className="prev">

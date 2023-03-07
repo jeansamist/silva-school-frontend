@@ -2,7 +2,7 @@ export let documentWidth = window.innerWidth;
 export let documentHeight = window.innerHeight;
 window.addEventListener("resize", () => {
   documentWidth = window.innerWidth;
-  documentWidth = window.innerHeight;
+  documentHeight = window.innerHeight;
 });
 
 export const COLORS = {

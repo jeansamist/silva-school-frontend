@@ -1,6 +1,6 @@
 import React, { PropsWithChildren, FunctionComponent, useState } from "react";
 import Slider from "rc-slider";
-import theme from "../../constants/theme.js";
+import theme from "../../constants/theme";
 import "rc-slider/assets/index.css";
 export type FormSliderProps = PropsWithChildren<{
   label?: string;

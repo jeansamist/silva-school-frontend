@@ -1,16 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { Checkbox } from "@silva-school-frontend/ui";
-// import styles from './app.module.css';
-// import NxWelcome from './nx-welcome';
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Index } from "../Views/Index";
 
 export function App() {
   return (
-    <>
-      <Checkbox /> text
-      {/* <NxWelcome title="silva-school-frontend" />
-
-      <div /> */}
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Index />} />
+      </Routes>
+    </Router>
   );
 }
 
