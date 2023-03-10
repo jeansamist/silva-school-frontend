@@ -1,5 +1,6 @@
 import React, { FunctionComponent, MouseEvent, PropsWithChildren, ReactNode } from "react";
 import { IconType } from "react-icons";
+import { useNavigate } from "react-router-dom";
 export type ButtonProps = PropsWithChildren<{
   type?: string;
   leftIcon?: IconType | null;
@@ -9,6 +10,7 @@ export type ButtonProps = PropsWithChildren<{
   onClick?: (e: MouseEvent) => void;
   disabled?: boolean;
   className?: string;
+  to?: string;
 }>;
 export const Button: FunctionComponent<ButtonProps> = ({
   type = "primary",
@@ -22,10 +24,13 @@ export const Button: FunctionComponent<ButtonProps> = ({
   },
   disabled = false,
   className = "",
+  to = undefined,
 }) => {
+  const navigate = useNavigate();
   function handdleClick(e: MouseEvent) {
     if (!disabled) {
       onClick(e);
+      if (to) navigate(to);
     }
   }
   return (

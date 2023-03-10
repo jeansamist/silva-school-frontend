@@ -5,28 +5,28 @@ responsive;
 
 @font-face {
   font-family: 'Segoe UI';
-  src: url('./../fonts/segoe-ui/Segoe\ UI.ttf');
+  src: url('assets/fonts/segoe-ui/Segoe\ UI.ttf');
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Segoe UI';
-  src: url('./../fonts/segoe-ui/Segoe\ UI\ Bold.ttf');
+  src: url('assets/fonts/segoe-ui/Segoe\ UI\ Bold.ttf');
   font-weight: bold;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'Segoe UI';
-  src: url('./../fonts/segoe-ui/Segoe\ UI\ Italic.ttf');
+  src: url('assets/fonts/segoe-ui/Segoe\ UI\ Italic.ttf');
   font-weight: normal;
   font-style: italic;
 }
 
 @font-face {
   font-family: 'Segoe UI';
-  src: url('./../fonts/segoe-ui/Segoe\ UI\ Bold\ Italic.ttf');
+  src: url('assets/fonts/segoe-ui/Segoe\ UI\ Bold\ Italic.ttf');
   font-weight: bold;
   font-style: italic;
 }
@@ -293,7 +293,10 @@ responsive;
     transform: translateY(-50%);
     color: var(--colorInfo);
     pointer-events: none;
-    transition: transform 0.3s ease-out, font-size 0.3s ease-out, color 0.3s ease-out;
+    transition: transform 0.3s ease-out,
+      padding 0.3s ease-out,
+      font-size 0.3s ease-out,
+      color 0.3s ease-out;
   }
 
   .field>.input-container>label.no-left {
@@ -308,6 +311,14 @@ responsive;
     transition: color 0.3s ease-out;
   }
 
+  .field.field-date {
+    color: transparent;
+  }
+
+  .field.active.field-date {
+    color: var(--color);
+  }
+
   .field.active {
     border: 1px solid var(--primary);
   }
@@ -317,7 +328,9 @@ responsive;
   }
 
   .field.active>.input-container>label {
-    transform: translateY(-200%);
+    transform: translateY(-155%);
+    background: var(--backgroundLight);
+    padding: 0 0.5em;
     color: var(--primary);
     font-size: var(--body2);
   }
@@ -357,10 +370,12 @@ responsive;
     position: absolute;
     font-size: var(--body2);
     pointer-events: none;
+    width: 100%;
     left: 0;
     bottom: 0;
     font-style: italic;
-    transform: translate(1.5em, 1.25em);
+    text-align: right;
+    transform: translate(0, 1.5em);
   }
 
   .field.field-error.field-big>.field-error-text {

@@ -2,12 +2,10 @@
 .config-card {
   max-width: 500px;
   width: 95%;
-  margin: 1.5em auto;
 }
 
 .config-view {
   height: 100vh;
-  overflow-y: auto;
   background: url('assets/images/oooscillate.svg') no-repeat center / cover;
 }
 

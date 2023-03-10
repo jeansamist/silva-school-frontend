@@ -1,1 +1,2 @@
-export * from './lib/Hooks';
+export * from "./lib/useConfig/useConfig";
+export * from "./lib/Hooks";

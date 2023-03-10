@@ -7,6 +7,7 @@ export type RadioProps = {
   onChange?: (newValue: boolean, e: ChangeEvent) => void;
   disabled?: boolean;
   className?: string;
+  name?: string;
 };
 
 export const Radio: FunctionComponent<RadioProps> = ({
@@ -18,6 +19,7 @@ export const Radio: FunctionComponent<RadioProps> = ({
   },
   disabled = false,
   className = null,
+  name = "",
 }) => {
   const [checked, setchecked] = useState<boolean>(false);
   useEffect(() => {
@@ -32,7 +34,7 @@ export const Radio: FunctionComponent<RadioProps> = ({
   };
   return (
     <div className={`radio radio-${size}${disabled ? " radio-disabled" : ""}${className ? ` ${className}` : ""}`}>
-      <input type="radio" checked={checked} onChange={handleChange} id={id} />
+      <input type="radio" checked={checked} name={name} onChange={handleChange} id={id} />
       <label htmlFor={id}></label>
     </div>
   );

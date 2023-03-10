@@ -1,5 +1,6 @@
 import React, { ChangeEvent, FunctionComponent, ReactNode, useEffect, useState } from "react";
 import { IconType } from "react-icons";
+import { Control, Controller, UseControllerProps, ControllerRenderProps, FieldValues } from "react-hook-form";
 export type FieldProps = {
   label: ReactNode;
   type?: string;
@@ -13,6 +14,7 @@ export type FieldProps = {
   disabled?: boolean;
   className?: string;
   error?: ReactNode;
+  field?: object;
 };
 export const Field: FunctionComponent<FieldProps> = ({
   label = "label",
@@ -29,6 +31,7 @@ export const Field: FunctionComponent<FieldProps> = ({
   disabled = false,
   className = "",
   error = "",
+  field = {},
 }) => {
   const [active, setactive] = useState<boolean>(false);
   const [isValid, setisValid] = useState<boolean>(false);
@@ -62,9 +65,10 @@ export const Field: FunctionComponent<FieldProps> = ({
   }
   return (
     <div
+      {...field}
       className={`field ${active ? "active " : ""}${isValid ? "valid " : ""}field-${type} field-${size}${disabled ? " field-disabled" : ""}${
-        error ? " field-error" : ""
-      }${className ? ` ${className}` : ""}`}
+        type === "date" ? " field-date" : ""
+      }${error ? " field-error" : ""}${className ? ` ${className}` : ""}`}
     >
       {LeftIcon && (
         <div className="field-icon left-icon lh-0">
@@ -84,3 +88,16 @@ export const Field: FunctionComponent<FieldProps> = ({
     </div>
   );
 };
+export type FieldControlledProps = UseControllerProps & FieldProps;
+export function FieldControlled(props: FieldControlledProps) {
+  return (
+    <Controller
+      name={props.name}
+      control={props.control}
+      rules={props.rules}
+      render={({ field, fieldState }) => {
+        return <Field {...{ ...props, field, error: fieldState.error?.message }} />;
+      }}
+    />
+  );
+}
