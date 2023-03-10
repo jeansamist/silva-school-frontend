@@ -1,12 +1,14 @@
 import { yupResolver } from "@hookform/resolvers/yup";
+import { User } from "@silva-school-frontend/models";
 import { Button, FieldControlled, Flexbox, Heading, Paragraph, Radio } from "@silva-school-frontend/ui";
-import { FunctionComponent, useContext, useEffect } from "react";
+import dayjs from "dayjs";
+import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { FiCalendar, FiLock, FiMail, FiMapPin, FiPhone, FiUser } from "react-icons/fi";
 import Loading from "react-loading";
 import { useNavigate } from "react-router-dom";
-import { ConfigContext } from "../Contexts/ConfigContext";
-import { FiUser, FiLock, FiMail, FiCalendar, FiMapPin, FiPhone } from "react-icons/fi";
 import * as yup from "yup";
+import { ConfigContext } from "../Contexts/ConfigContext";
 const schema = yup.object({
   first_name: yup.string().required(),
   last_name: yup.string().required(),
@@ -19,22 +21,18 @@ const schema = yup.object({
 });
 
 export const FirstAdminConfigView: FunctionComponent = () => {
-  type FormValues = {
-    first_name: string;
-    last_name: string;
-    email: string;
-    username: string;
-    password: string;
-  };
+  type FormValues = User;
   const navigate = useNavigate();
+  const [sex, setsex] = useState("M");
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
     mode: "onChange",
     resolver: yupResolver(schema),
   });
 
-  const onSubmit: SubmitHandler<Partial<FormValues>> = async (data) => {
-    console.log(data);
-    navigate("../firstschool");
+  const onSubmit: SubmitHandler<Partial<FormValues>> = async (data: User) => {
+    data.birthdate = dayjs(data.birthdate).format("YYYY-MM-DD");
+    data.sex = sex;
+    config.configAdmin(data);
   };
 
   const config = useContext(ConfigContext);
@@ -50,7 +48,9 @@ export const FirstAdminConfigView: FunctionComponent = () => {
   }, [config, navigate]);
   return (
     <div className="view view-firstadminconfig">
-      <Paragraph className="mt-1">There are no admin users in the database yet.</Paragraph>
+      <Paragraph className="mt-1">
+        There are no <b>admin users</b> in the database yet.
+      </Paragraph>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <div className="group-fields">
           <FieldControlled control={control} rightIcon={FiUser} name="first_name" label="First Name" />
@@ -65,11 +65,11 @@ export const FirstAdminConfigView: FunctionComponent = () => {
             <b>Sex</b>
             <Flexbox className="aic" gap>
               <Flexbox className="aic lh-0">
-                <Radio name="sex" />
+                <Radio name="sex" onClick={setsex} value="M" />
                 <Heading type="4">M</Heading>
               </Flexbox>
               <Flexbox className="aic lh-0">
-                <Radio name="sex" />
+                <Radio name="sex" onClick={setsex} value="F" />
                 <Heading type="4">F</Heading>
               </Flexbox>
             </Flexbox>

@@ -1,11 +1,12 @@
 import { useConfig } from "@silva-school-frontend/hooks";
+import { School, User } from "@silva-school-frontend/models";
 import React, { FunctionComponent, createContext, PropsWithChildren } from "react";
 
 type _def = {
   adminExist: boolean;
   schoolExist: boolean;
-  configAdmin: () => void;
-  configSchool: () => void;
+  configAdmin: (data: User) => void;
+  configSchool: (data: School) => void;
   isConfig: () => boolean;
 };
 
