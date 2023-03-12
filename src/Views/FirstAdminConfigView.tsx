@@ -34,7 +34,6 @@ export const FirstAdminConfigView: FunctionComponent = () => {
     data.sex = sex;
     config.configAdmin(data);
   };
-
   const config = useContext(ConfigContext);
 
   useEffect(() => {

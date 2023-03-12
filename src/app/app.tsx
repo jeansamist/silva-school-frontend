@@ -8,21 +8,25 @@ import { Index } from "../Views/Index";
 import { ConfigProvider } from "../Contexts/ConfigContext";
 import { ConfigView } from "../Views/ConfigView";
 import { FirstSchoolConfigView } from "../Views/FirstSchoolConfigView";
+import { LoginAuthView } from "../Views/LoginAuthView";
+import { AuthProvider } from "../Contexts/AuthContext";
 export function App() {
   return (
     <ConfigProvider>
-      <Router>
-        <Routes>
-          <Route path="/config" element={<ConfigLayout />}>
-            <Route index element={<ConfigView />} />
-            <Route path="firstadmin" element={<FirstAdminConfigView />} />
-            <Route path="firstschool" element={<FirstSchoolConfigView />} />
-          </Route>
-          <Route path="/" element={<AuthLayout />}>
-            <Route index element={<Index />} />
-          </Route>
-        </Routes>
-      </Router>
+      <AuthProvider>
+        <Router>
+          <Routes>
+            <Route path="/config" element={<ConfigLayout />}>
+              <Route index element={<ConfigView />} />
+              <Route path="firstadmin" element={<FirstAdminConfigView />} />
+              <Route path="firstschool" element={<FirstSchoolConfigView />} />
+            </Route>
+            <Route path="/auth" element={<AuthLayout />}>
+              <Route index element={<LoginAuthView />} />
+            </Route>
+          </Routes>
+        </Router>
+      </AuthProvider>
     </ConfigProvider>
   );
 }

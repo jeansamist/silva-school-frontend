@@ -26,9 +26,7 @@ const def: _def = {
 
 export const ConfigContext = createContext(def);
 
-export type ConfigProviderProps = PropsWithChildren;
-
-export const ConfigProvider: FunctionComponent<ConfigProviderProps> = ({ children }) => {
+export const ConfigProvider: FunctionComponent<PropsWithChildren> = ({ children }) => {
   const config = useConfig();
   return <ConfigContext.Provider value={config}>{children}</ConfigContext.Provider>;
 };

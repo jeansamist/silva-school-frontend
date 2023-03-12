@@ -1,13 +1,14 @@
+
 import { useState, useCallback, useEffect } from "react";
-import axios from 'axios'
 import { School, User } from "@silva-school-frontend/models";
+import { backendAxiosInstance } from "@silva-school-frontend/functions";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export function useConfig()  {
   const [adminExist, setadminExist] = useState(false);
   const [schoolExist, setschoolExist] = useState(false);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/config').then((response) => {
+    backendAxiosInstance.get('/config').then((response) => {
       const config: {
         admin_exist: boolean,
         school_exist: boolean
@@ -18,7 +19,7 @@ export function useConfig()  {
   }, [])
 
   const configAdmin = useCallback((data: User) => {
-    axios.post('http://127.0.0.1:8000/api/user', data, {
+    backendAxiosInstance.post('/user', data, {
       headers: {
         'Action-Name': 'config'
       }
@@ -28,7 +29,7 @@ export function useConfig()  {
   }, []);
 
   const configSchool = useCallback((data: School) => {
-    axios.post('http://127.0.0.1:8000/api/school', data, {
+    backendAxiosInstance.post('/school', data, {
       headers: {
         'Action-Name': 'config'
       }

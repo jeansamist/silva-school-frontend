@@ -15,6 +15,22 @@
   height: 100%;
 }
 
+.auth-card {
+  max-width: 500px;
+  width: 95%;
+  margin: 1.5em auto;
+}
+
+.auth-view {
+  height: 100vh;
+  overflow-y: auto;
+  background: url('assets/images/oooscillate.svg') no-repeat center / cover;
+}
+
+.auth-view>.container {
+  height: 100%;
+}
+
 .group-fields {
   display: flex;
   flex-direction: column;
