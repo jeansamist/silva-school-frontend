@@ -8,6 +8,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { Paragraph, FieldControlled, Button } from "@silva-school-frontend/ui";
 import { FiMapPin, FiHome } from "react-icons/fi";
 import Loading from "react-loading";
+import { LoadingContext } from "../Contexts/LoadingContext";
 const schema = yup.object({
   name: yup.string().required(),
   location: yup.string().required(),
@@ -28,18 +29,18 @@ export const FirstSchoolConfigView: FunctionComponent = () => {
     data.users = [];
     config.configSchool(data);
   };
+  const loading = useContext(LoadingContext);
+
   useEffect(() => {
-    if (!config.isConfig()) {
-      if (!config.adminExist) {
-        navigate("../firstadmin");
-      }
+    if (config.isLoaded) {
       if (config.schoolExist) {
         navigate("/");
+      } else if (!config.configAdmin) {
+        navigate("/config/firstadmin");
       }
-    } else {
-      navigate("/");
     }
-  }, [config, navigate]);
+  }, [config, loading, navigate]);
+
   return (
     <div className="view view-firstschoolconfig">
       <Paragraph className="mt-1">

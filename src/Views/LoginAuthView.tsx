@@ -1,11 +1,13 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, FieldControlled } from "@silva-school-frontend/ui";
-import { FunctionComponent, useContext } from "react";
+import { Button, FieldControlled, Alert } from "@silva-school-frontend/ui";
+import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FiHome, FiLock, FiUser } from "react-icons/fi";
 import Loading from "react-loading";
 import { AuthContext } from "../Contexts/AuthContext";
 import * as yup from "yup";
+import { useNavigate } from "react-router-dom";
+import { LoadingContext } from "../Contexts/LoadingContext";
 const schema = yup.object({
   username: yup.string().required(),
   password: yup.string().min(8).required(),
@@ -15,13 +17,28 @@ export const LoginAuthView: FunctionComponent = () => {
     username: string;
     password: string;
   };
+  const loading = useContext(LoadingContext);
   const auth = useContext(AuthContext);
+  const navigate = useNavigate();
+  const [error, seterror] = useState<string>();
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
     mode: "onChange",
     resolver: yupResolver(schema),
   });
+  useEffect(() => {
+    if (auth.isLoaded) {
+      if (auth.user !== undefined && auth.user !== false) {
+        navigate("/");
+        loading.setisAuthLoading(true);
+      }
+    }
+  }, [auth, loading, navigate]);
+
   const onSubmit: SubmitHandler<Partial<FormValues>> = async (data) => {
-    auth.login(data);
+    const response = await auth.login(data);
+    if (typeof response !== "boolean") {
+      seterror(response.detail);
+    }
   };
 
   return (
@@ -44,6 +61,13 @@ export const LoginAuthView: FunctionComponent = () => {
             <div className="label">Log in</div>
           )}
         </Button>
+        {error !== undefined ? (
+          <div className="mt-1" style={{ color: "var(--red)", textAlign: "center" }}>
+            {error}
+          </div>
+        ) : (
+          ""
+        )}
       </form>
     </div>
   );

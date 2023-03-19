@@ -3,14 +3,8 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { ConfigContext } from "../Contexts/ConfigContext";
 import { Card, Heading } from "@silva-school-frontend/ui";
 import { Logo } from "../Components/Logo";
+import { LoadingContext } from "../Contexts/LoadingContext";
 export const ConfigLayout: FunctionComponent = () => {
-  const config = useContext(ConfigContext);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (config.isConfig()) {
-      navigate("/");
-    }
-  }, [config, navigate]);
   return (
     <main className="config-view">
       <div className="container">

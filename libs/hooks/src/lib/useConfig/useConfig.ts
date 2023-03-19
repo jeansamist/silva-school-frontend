@@ -1,46 +1,55 @@
-
 import { useState, useCallback, useEffect } from "react";
 import { School, User } from "@silva-school-frontend/models";
-import { backendAxiosInstance } from "@silva-school-frontend/functions";
+import useApi from "../useApi/useApi";
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export function useConfig()  {
+export function useConfig() {
   const [adminExist, setadminExist] = useState(false);
   const [schoolExist, setschoolExist] = useState(false);
+  const [isLoaded, setisLoaded] = useState(false);
+  const { api } = useApi();
 
   useEffect(() => {
-    backendAxiosInstance.get('/config').then((response) => {
-      const config: {
-        admin_exist: boolean,
-        school_exist: boolean
-      } = response.data;
-      setadminExist(config.admin_exist)
-      setschoolExist(config.school_exist)
-    })
-  }, [])
+    api
+      .get("/config")
+      .then((response) => {
+        const config: {
+          admin_exist: boolean;
+          school_exist: boolean;
+        } = response.data;
+        setadminExist(config.admin_exist);
+        setschoolExist(config.school_exist);
+        setisLoaded(true);
+      })
+      .catch();
+  }, []);
 
   const configAdmin = useCallback((data: User) => {
-    backendAxiosInstance.post('/user', data, {
-      headers: {
-        'Action-Name': 'config'
-      }
-    }).then(() => {
-      setadminExist(true)
-    })
+    api
+      .post("/user", data, {
+        headers: {
+          "Action-Name": "config",
+        },
+      })
+      .then(() => {
+        setadminExist(true);
+      });
   }, []);
 
   const configSchool = useCallback((data: School) => {
-    backendAxiosInstance.post('/school', data, {
-      headers: {
-        'Action-Name': 'config'
-      }
-    }).then(() => {
-      setschoolExist(true)
-    })
+    api
+      .post("/school", data, {
+        headers: {
+          "Action-Name": "config",
+        },
+      })
+      .then(() => {
+        setschoolExist(true);
+      });
   }, []);
   const isConfig = useCallback((): boolean => {
-    return adminExist === true && schoolExist === true
+    return adminExist === true && schoolExist === true;
   }, [adminExist, schoolExist]);
-  return { adminExist, schoolExist, configAdmin, configSchool, isConfig };
+  return { adminExist, schoolExist, configAdmin, configSchool, isConfig, isLoaded };
 }
 
 export default useConfig;

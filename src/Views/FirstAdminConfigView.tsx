@@ -9,6 +9,7 @@ import Loading from "react-loading";
 import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ConfigContext } from "../Contexts/ConfigContext";
+import { LoadingContext } from "../Contexts/LoadingContext";
 const schema = yup.object({
   first_name: yup.string().required(),
   last_name: yup.string().required(),
@@ -35,16 +36,15 @@ export const FirstAdminConfigView: FunctionComponent = () => {
     config.configAdmin(data);
   };
   const config = useContext(ConfigContext);
+  const loading = useContext(LoadingContext);
 
   useEffect(() => {
-    if (!config.isConfig()) {
+    if (config.isLoaded) {
       if (config.adminExist) {
-        navigate("../firstschool");
+        navigate("/config/firstschool/");
       }
-    } else {
-      navigate("/");
     }
-  }, [config, navigate]);
+  }, [config, loading, navigate]);
   return (
     <div className="view view-firstadminconfig">
       <Paragraph className="mt-1">
