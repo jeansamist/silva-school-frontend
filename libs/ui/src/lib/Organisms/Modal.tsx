@@ -8,7 +8,7 @@ import { FiX } from "react-icons/fi";
 import { Button } from "./../Atoms/Button";
 import { Flexbox } from "../Containers/Flexbox";
 export type ModalProps = PropsWithChildren<{
-  title?: string;
+  title?: ReactNode;
   isVisible?: boolean;
   size?: number;
   footer?: ReactNode;

@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, FunctionComponent, MouseEvent } from "react";
+import React, { PropsWithChildren, FunctionComponent, MouseEvent, ReactNode } from "react";
 import { Heading } from "../Atoms/Heading";
 import { Flexbox } from "../Containers/Flexbox";
 import { AnimatePresence, motion as framerMotion } from "framer-motion";
@@ -7,7 +7,7 @@ export class Brand {
   constructor(
     public position: string = "left",
     public type: string = "text",
-    public content: string = "Brand Content",
+    public content: ReactNode = "Brand Content",
     public underlined: boolean = false,
     public width: number | string = 200,
     public onClick: (e: MouseEvent) => void = (e) => {
@@ -45,7 +45,7 @@ export const Header: FunctionComponent<HeaderProps> = ({
         </framerMotion.div>
       ) : brand.type === "image" && showBrand ? (
         <framerMotion.div {...motion} className="header-brand header-brand-image" onClick={brand.onClick}>
-          <img style={{ width: brand.width }} src={brand.content} alt="brand" />
+          <img style={{ width: brand.width }} src={typeof brand.content === "string" ? brand.content : ""} alt="brand" />
         </framerMotion.div>
       ) : null}
     </AnimatePresence>

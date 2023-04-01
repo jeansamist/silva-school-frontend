@@ -9,6 +9,7 @@ import avatar from "./../../assets/images/avatars/avatar (1).png";
 import logo from "./../../assets/images/silva-logo-colors-png.png";
 import { AnimatePresence, motion } from "framer-motion";
 import { IconType } from "react-icons";
+import { Link } from "react-router-dom";
 export class SidebarLink {
   constructor(public label: string = "Link", public to: string = "/", public icon: IconType, public active: boolean = false) {}
 }
@@ -30,7 +31,7 @@ function SidebarLinkJSX({ to = "/", Ico = FiSquare, label = "Link", active = fal
   }, [active]);
 
   return (
-    <a href={to} className={"sidebar-link" + (_active ? " active" : "") + (!_ ? " flex aic jcc" : "")}>
+    <Link to={to} className={"sidebar-link" + (_active ? " active" : "") + (!_ ? " flex aic jcc" : "")}>
       <div className="ico">
         <Ico className="flex lh-0" size={20} />
       </div>
@@ -43,7 +44,7 @@ function SidebarLinkJSX({ to = "/", Ico = FiSquare, label = "Link", active = fal
           ""
         )}
       </AnimatePresence>
-    </a>
+    </Link>
   );
 }
 export const Sidebar: FunctionComponent<SidebarProps> = ({
@@ -143,7 +144,7 @@ export const Sidebar: FunctionComponent<SidebarProps> = ({
                   ""
                 )}
                 {category.links.map((_link, _key) => (
-                  <SidebarLinkJSX {..._link} opened={_opened} _={opened} key={_key} />
+                  <SidebarLinkJSX {..._link} Ico={_link.icon} opened={_opened} _={opened} key={_key} />
                 ))}
               </React.Fragment>
             ))}

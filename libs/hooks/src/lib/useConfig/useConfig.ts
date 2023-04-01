@@ -1,3 +1,4 @@
+import { AxiosError } from "axios";
 import { useState, useCallback, useEffect } from "react";
 import { School, User } from "@silva-school-frontend/models";
 import useApi from "../useApi/useApi";
@@ -23,16 +24,27 @@ export function useConfig() {
       .catch();
   }, []);
 
-  const configAdmin = useCallback((data: User) => {
-    api
-      .post("/user", data, {
+  const configAdmin = useCallback(async (data: User): Promise<User | AxiosError> => {
+    try {
+      const response = await api.post("/user", data, {
         headers: {
           "Action-Name": "config",
         },
-      })
-      .then(() => {
-        setadminExist(true);
       });
+      const user: User = response.data;
+      setadminExist(true);
+      return user;
+    } catch (reason) {
+      const error = reason as AxiosError;
+      return error;
+    }
+    // .catch((reason) => {
+    //   const error = reason as AxiosError;
+    //   const data = error.response?.data as object
+    //   return new Promise<object>((resolve) => {
+    //     resolve(data);
+    //   });
+    // });
   }, []);
 
   const configSchool = useCallback((data: School) => {

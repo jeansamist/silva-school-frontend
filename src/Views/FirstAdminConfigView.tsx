@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import * as yup from "yup";
 import { ConfigContext } from "../Contexts/ConfigContext";
 import { LoadingContext } from "../Contexts/LoadingContext";
+import { AxiosError } from "axios";
 const schema = yup.object({
   first_name: yup.string().required(),
   last_name: yup.string().required(),
@@ -25,6 +26,7 @@ export const FirstAdminConfigView: FunctionComponent = () => {
   type FormValues = User;
   const navigate = useNavigate();
   const [sex, setsex] = useState("M");
+  const [errors, seterrors] = useState<{ email?: string[] }>();
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -33,7 +35,13 @@ export const FirstAdminConfigView: FunctionComponent = () => {
   const onSubmit: SubmitHandler<Partial<FormValues>> = async (data: User) => {
     data.birthdate = dayjs(data.birthdate).format("YYYY-MM-DD");
     data.sex = sex;
-    config.configAdmin(data);
+    data.schools = [];
+    config.configAdmin(data).then((response) => {
+      if (response instanceof AxiosError) {
+        const data = response.response?.data as { email?: string[] };
+        seterrors(data);
+      }
+    });
   };
   const config = useContext(ConfigContext);
   const loading = useContext(LoadingContext);
@@ -87,6 +95,16 @@ export const FirstAdminConfigView: FunctionComponent = () => {
             <div className="label">Continue</div>
           )}
         </Button>
+
+        {errors !== undefined ? (
+          <div className="mt-1" style={{ color: "var(--red)", textAlign: "center" }}>
+            {errors.email?.map((error) => (
+              <div>{error}</div>
+            ))}
+          </div>
+        ) : (
+          ""
+        )}
       </form>
     </div>
   );

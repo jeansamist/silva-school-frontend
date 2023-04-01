@@ -1,14 +1,13 @@
-import { useConfig, useLoading } from "@silva-school-frontend/hooks";
+import { useConfig } from "@silva-school-frontend/hooks";
 import { School, User } from "@silva-school-frontend/models";
-import React, { FunctionComponent, createContext, PropsWithChildren, useEffect, useContext } from "react";
-import { LoadingContext } from "./LoadingContext";
-import { useNavigate } from "react-router-dom";
+import { AxiosError } from "axios";
+import { FunctionComponent, PropsWithChildren, createContext } from "react";
 
 type _def = {
   adminExist: boolean;
   schoolExist: boolean;
   isLoaded: boolean;
-  configAdmin: (data: User) => void;
+  configAdmin: (data: User) => Promise<User | AxiosError>;
   configSchool: (data: School) => void;
   isConfig: () => boolean;
 };
@@ -18,7 +17,7 @@ const def: _def = {
   schoolExist: false,
   isLoaded: false,
   configAdmin: () => {
-    return;
+    return Promise.resolve(new User());
   },
   configSchool: () => {
     return;

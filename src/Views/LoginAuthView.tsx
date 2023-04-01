@@ -1,12 +1,12 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Button, FieldControlled, Alert } from "@silva-school-frontend/ui";
+import { Button, FieldControlled } from "@silva-school-frontend/ui";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { FiHome, FiLock, FiUser } from "react-icons/fi";
+import { FiLock, FiUser } from "react-icons/fi";
 import Loading from "react-loading";
-import { AuthContext } from "../Contexts/AuthContext";
-import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
+import * as yup from "yup";
+import { AuthContext } from "../Contexts/AuthContext";
 import { LoadingContext } from "../Contexts/LoadingContext";
 const schema = yup.object({
   username: yup.string().required(),
@@ -46,7 +46,7 @@ export const LoginAuthView: FunctionComponent = () => {
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <div className="group-fields">
           <FieldControlled control={control} rightIcon={FiUser} name="username" label="Username" />
-          <FieldControlled control={control} rightIcon={FiLock} name="password" label="Password" />
+          <FieldControlled control={control} rightIcon={FiLock} name="password" type="password" label="Password" />
         </div>
         <Button type="primary" size="large" disabled={formState ? !formState.isValid || formState.isSubmitting : true}>
           {formState ? (

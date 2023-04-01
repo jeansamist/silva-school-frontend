@@ -1,7 +1,7 @@
-import React, { FunctionComponent, useState, useContext, useEffect } from "react";
+import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { ConfigContext } from "../Contexts/ConfigContext";
 import { AuthContext } from "../Contexts/AuthContext";
+import { ConfigContext } from "../Contexts/ConfigContext";
 import { LoadingContext } from "../Contexts/LoadingContext";
 import { LoadingLayout } from "./LoadingLayout";
 
@@ -16,14 +16,19 @@ export const AppLayout: FunctionComponent = () => {
     if (config.isLoaded && auth.isLoaded) {
       if (config.isConfig()) {
         loading.setisConfLoading(true);
-        if (auth.user === false) {
+        if (auth.user === undefined) {
           if (!authVefied) {
             navigate("/auth/");
             loading.setisAuthLoading(true);
             setauthVefied(true);
           }
         } else if (auth.user !== undefined) {
-          if (!authVefied) {
+          if (auth.current_school_id !== undefined) {
+            if (!authVefied) {
+              loading.setisAuthLoading(true);
+            }
+          } else {
+            navigate("/selectschool");
             loading.setisAuthLoading(true);
           }
         }

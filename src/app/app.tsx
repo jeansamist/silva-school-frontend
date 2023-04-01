@@ -12,6 +12,11 @@ import { LoginAuthView } from "../Views/LoginAuthView";
 import { AuthProvider } from "../Contexts/AuthContext";
 import { AppLayout } from "../Layouts/AppLayout";
 import { LoadingProvider } from "../Contexts/LoadingContext";
+import { DashboardView } from "../Views/DashboardView";
+import { ClassesView } from "../Views/ClassesView";
+import { ClassView } from "../Views/ClassView";
+import { ClassRoomView } from "../Views/ClassRoomView";
+import { SelectSchoolView } from "../Views/SelectSchoolView";
 export function App() {
   return (
     <LoadingProvider>
@@ -20,7 +25,13 @@ export function App() {
           <Router>
             <Routes>
               <Route path="/" element={<AppLayout />}>
-                <Route index element={<Index />} />
+                <Route path="/" element={<Index />}>
+                  <Route index element={<DashboardView />} />
+                  <Route path="/classes" element={<ClassesView />} />
+                  <Route path="/classes/:class_level_id" element={<ClassView />} />
+                  <Route path="/classes/:class_level_id/:class_room_id" element={<ClassRoomView />} />
+                </Route>
+                <Route path="/selectschool" element={<SelectSchoolView />} />
                 <Route path="/config" element={<ConfigLayout />}>
                   <Route index element={<ConfigView />} />
                   <Route path="firstadmin" element={<FirstAdminConfigView />} />
