@@ -1,10 +1,11 @@
 import { useAuth } from "@silva-school-frontend/hooks";
-import { User } from "@silva-school-frontend/models";
+import { School, User } from "@silva-school-frontend/models";
 import { FunctionComponent, PropsWithChildren, createContext } from "react";
 type _def = {
   user?: User | false;
   isLoaded: boolean;
-  current_school_id?: number;
+  current_school?: School;
+  setcurrent_school?: (id: number) => void;
   login: (data: { username?: string; password?: string }) => Promise<boolean | { detail?: string }>;
   authentificate: () => Promise<boolean>;
 };

@@ -10,7 +10,8 @@ export class User extends Person {
     public override status?: string,
     public override email?: string,
     public override phone?: number,
-    public schools?: School[],
+    public schools?: number[],
+    public role?: number,
     public username?: string,
     public password?: string
   ) {

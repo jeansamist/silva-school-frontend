@@ -1,3 +1,5 @@
+import logo_ from "../assets/images/school_image_default.png";
+export const logo = logo_;
 export function Logo() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 948.5 397.11">

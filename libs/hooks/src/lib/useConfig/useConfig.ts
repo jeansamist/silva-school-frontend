@@ -48,8 +48,16 @@ export function useConfig() {
   }, []);
 
   const configSchool = useCallback((data: School) => {
+    console.log(data);
+    const formdata = new FormData();
+    if (data.name && data.location && data.image) {
+      formdata.append("name", data.name);
+      formdata.append("location", data.location);
+      formdata.append("image", data.image);
+    }
+
     api
-      .post("/school", data, {
+      .post("/school", formdata, {
         headers: {
           "Action-Name": "config",
         },

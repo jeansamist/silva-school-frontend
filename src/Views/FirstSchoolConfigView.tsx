@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useContext, useEffect } from "react";
+import React, { FunctionComponent, useContext, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ConfigContext } from "../Contexts/ConfigContext";
 import * as yup from "yup";
@@ -16,15 +16,28 @@ const schema = yup.object({
 export const FirstSchoolConfigView: FunctionComponent = () => {
   type FormValues = School;
   const navigate = useNavigate();
+  const [logo, setlogo] = useState<File>();
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
     mode: "onChange",
     resolver: yupResolver(schema),
   });
+  const file = useRef<HTMLInputElement>(null);
+  useEffect(() => {
+    if (file.current) {
+      const file_element = file.current;
+      file_element.addEventListener("change", (e) => {
+        const target = e.target as HTMLInputElement;
+        if (target.files !== null) {
+          setlogo(target.files[0]);
+        }
+      });
+    }
+  }, [file]);
 
   const config = useContext(ConfigContext);
 
   const onSubmit: SubmitHandler<Partial<FormValues>> = async (data: School) => {
-    data.image_url = "default.png";
+    data.image = logo;
     data.classes = [];
     data.users = [];
     config.configSchool(data);
@@ -50,6 +63,8 @@ export const FirstSchoolConfigView: FunctionComponent = () => {
         <div className="group-fields">
           <FieldControlled control={control} rightIcon={FiHome} name="name" label="School Name" />
           <FieldControlled control={control} rightIcon={FiMapPin} name="location" label="Location" />
+          Select a school logo
+          <input ref={file} type="file" src="" alt="" />
         </div>
         <Button type="primary" size="large" disabled={formState ? !formState.isValid || formState.isSubmitting : true}>
           {formState ? (

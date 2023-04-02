@@ -15,10 +15,11 @@ export type TokenType =
   | undefined;
 export function useApi(_tokens?: TokenType) {
   const [tokens, settokens] = useState<TokenType>(_tokens);
-  const BAKEND_URL = "http://127.0.0.1:8000/api";
+  const BAKEND_URL = "http://127.0.0.1:8000";
+  const API_BAKEND_URL = BAKEND_URL + "/api";
 
   const backendAxiosInstance = axios.create({
-    baseURL: BAKEND_URL,
+    baseURL: API_BAKEND_URL,
     headers: {
       Authorization: tokens?.access,
     },
@@ -29,7 +30,7 @@ export function useApi(_tokens?: TokenType) {
       if (dayjs(tokens.access_expire).isBefore(dayjs())) {
         if (dayjs(tokens.refresh_expire).isAfter(dayjs())) {
           axios
-            .post(`${BAKEND_URL}/token/refresh`, {
+            .post(`${API_BAKEND_URL}/token/refresh`, {
               refresh: tokens.refresh,
             })
             .then((resp) => {
@@ -48,7 +49,7 @@ export function useApi(_tokens?: TokenType) {
     return request;
   });
   const api = useCallback(backendAxiosInstance, [tokens]);
-  return { tokens, api, settokens };
+  return { tokens, api, settokens, API_BAKEND_URL, BAKEND_URL };
 }
 
 export default useApi;

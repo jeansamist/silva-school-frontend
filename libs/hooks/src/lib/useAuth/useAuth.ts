@@ -1,5 +1,5 @@
 import { TokenType } from "../useApi/useApi";
-import { User } from "@silva-school-frontend/models";
+import { School, User } from "@silva-school-frontend/models";
 import { useState, useCallback, useEffect } from "react";
 import useApi from "../useApi/useApi";
 import { AxiosError } from "axios";
@@ -8,6 +8,7 @@ import { AxiosError } from "axios";
 export function useAuth() {
   const [user, setuser] = useState<User | false>();
   const [isLoaded, setisLoaded] = useState(false);
+  const [current_school, setcurrent_school] = useState<School>();
   function getTokens() {
     const _tokens = localStorage.getItem("authTokens");
     return _tokens ? JSON.parse(_tokens) : null;
@@ -53,7 +54,23 @@ export function useAuth() {
       return false;
     }
   }, [tokens]);
-  return { user, login, authentificate, tokens, isLoaded };
+  return {
+    user,
+    login,
+    authentificate,
+    tokens,
+    isLoaded,
+    current_school,
+    setcurrent_school: useCallback((id: number) => {
+      api
+        .get("/school/" + id)
+        .then((response) => {
+          const school = response.data as School;
+          setcurrent_school(school);
+        })
+        .catch(console.log);
+    }, []),
+  };
 }
 
 export default useAuth;

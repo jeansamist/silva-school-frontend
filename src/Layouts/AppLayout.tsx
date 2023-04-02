@@ -12,7 +12,6 @@ export const AppLayout: FunctionComponent = () => {
   const auth = useContext(AuthContext);
   const navigate = useNavigate();
   useEffect(() => {
-    console.log(auth.user);
     if (config.isLoaded && auth.isLoaded) {
       if (config.isConfig()) {
         loading.setisConfLoading(true);
@@ -23,7 +22,7 @@ export const AppLayout: FunctionComponent = () => {
             setauthVefied(true);
           }
         } else if (auth.user !== undefined) {
-          if (auth.current_school_id !== undefined) {
+          if (auth.current_school !== undefined) {
             if (!authVefied) {
               loading.setisAuthLoading(true);
             }
