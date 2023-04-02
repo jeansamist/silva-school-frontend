@@ -1,3 +1,4 @@
+import { ClassRoom } from "./ClassRoom";
 import { User } from "./User";
 
 export class School {
@@ -6,7 +7,7 @@ export class School {
     public name?: string,
     public location?: string,
     public image?: string | File,
-    public classes?: [],
+    public classes?: ClassRoom[],
     public users?: User[]
   ) {}
 }

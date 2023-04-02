@@ -1,18 +1,16 @@
 import { Card, DataCard, Grid, Heading, Table } from "@silva-school-frontend/ui";
-import { FunctionComponent, MouseEvent } from "react";
-import { FiBookOpen, FiHome, FiUser, FiUsers } from "react-icons/fi";
+import { FunctionComponent, useContext } from "react";
+import { FiBookOpen, FiHome, FiUsers } from "react-icons/fi";
 import { ViewHeader } from "../Components/Elements/ViewHeader";
+import { AuthContext } from "../Contexts/AuthContext";
 
 export const DashboardView: FunctionComponent = () => {
-  function action(e: MouseEvent) {
-    return;
-  }
-
+  const { current_school } = useContext(AuthContext);
   return (
     <div className="view view-dashboard">
       <ViewHeader title="Dashboard" />
       <Grid columns={4} className="mt-5 mb-3">
-        <DataCard icon={FiHome} label="Total Classes" value="15" />
+        <DataCard icon={FiHome} label="Total Classes" value={current_school?.classes?.length.toString()} />
         <DataCard icon={FiUsers} label="Total Students" value="5000" color="success" />
         <DataCard label="Total Teachers" value="475" icon={FiBookOpen} color="danger" />
         <DataCard label="Total Wallet" value="55075" color="warning" />

@@ -25,7 +25,7 @@ export function useApi(_tokens?: TokenType) {
     },
   });
 
-  backendAxiosInstance.interceptors.request.use((request) => {
+  backendAxiosInstance.interceptors.request.use(async (request) => {
     if (tokens) {
       if (dayjs(tokens.access_expire).isBefore(dayjs())) {
         if (dayjs(tokens.refresh_expire).isAfter(dayjs())) {

@@ -1,32 +1,33 @@
-import { useApi } from "@silva-school-frontend/hooks";
-import React, { FunctionComponent, useContext, useEffect, useState } from "react";
-import { AuthContext } from "../Contexts/AuthContext";
 import { School } from "@silva-school-frontend/models";
-import { Card, Flexbox, Grid, Heading, Paragraph } from "@silva-school-frontend/ui";
-import school_image_default from "../assets/images/school_image_default.png";
+import { Card, Flexbox, Grid, Heading } from "@silva-school-frontend/ui";
+import { FunctionComponent, useContext, useEffect, useState } from "react";
 import { FiHome, FiMapPin, FiUsers } from "react-icons/fi";
 import { Link, useNavigate } from "react-router-dom";
+import { ApiContext } from "../Contexts/ApiContext";
+import { AuthContext } from "../Contexts/AuthContext";
+import school_image_default from "../assets/images/school_image_default.png";
 
 export const SelectSchoolView: FunctionComponent = () => {
   const [schools, setschools] = useState<School[]>([]);
   const navigate = useNavigate();
   const { user, setcurrent_school, current_school } = useContext(AuthContext);
-  function getTokens() {
-    const _tokens = localStorage.getItem("authTokens");
-    return _tokens ? JSON.parse(_tokens) : null;
-  }
+  const { api, BAKEND_URL } = useContext(ApiContext);
   useEffect(() => {
     if (current_school) {
       navigate("/");
     }
   }, [current_school, navigate]);
 
-  const { api, BAKEND_URL } = useApi(getTokens());
   useEffect(() => {
     if (user !== undefined && user !== false) {
-      api.get("/school").then((response) => {
-        setschools(response.data);
-      });
+      api
+        .get("/school")
+        .then((response) => {
+          setschools(response.data);
+        })
+        .catch(() => {
+          return;
+        });
     }
   }, [api, user]);
 
@@ -42,8 +43,9 @@ export const SelectSchoolView: FunctionComponent = () => {
                 setcurrent_school(parseFloat(school.id));
               }
             }}
+            key={key}
           >
-            <Card key={key}>
+            <Card>
               <Flexbox className="aic" gap>
                 <img
                   src={school.image === null ? school_image_default : BAKEND_URL + "" + school.image}

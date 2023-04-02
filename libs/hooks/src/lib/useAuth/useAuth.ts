@@ -1,8 +1,6 @@
-import { TokenType } from "../useApi/useApi";
 import { School, User } from "@silva-school-frontend/models";
-import { useState, useCallback, useEffect } from "react";
-import useApi from "../useApi/useApi";
-import { AxiosError } from "axios";
+import { useCallback, useEffect, useState } from "react";
+import useApi, { TokenType } from "../useApi/useApi";
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export function useAuth() {
@@ -54,6 +52,7 @@ export function useAuth() {
       return false;
     }
   }, [tokens]);
+
   return {
     user,
     login,
@@ -61,15 +60,18 @@ export function useAuth() {
     tokens,
     isLoaded,
     current_school,
-    setcurrent_school: useCallback((id: number) => {
-      api
-        .get("/school/" + id)
-        .then((response) => {
-          const school = response.data as School;
-          setcurrent_school(school);
-        })
-        .catch(console.log);
-    }, []),
+    setcurrent_school: useCallback(
+      (id: number) => {
+        api
+          .get("/school/" + id)
+          .then((response) => {
+            const school = response.data as School;
+            setcurrent_school(school);
+          })
+          .catch(console.log);
+      },
+      [tokens]
+    ),
   };
 }
 
