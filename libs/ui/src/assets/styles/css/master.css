@@ -1070,12 +1070,11 @@ responsive;
 
   /* Toast styles */
   .toast {
-    position: fixed !important;
     min-width: calc(var(--sidebarWidth) * 1.75);
     font-size: var(--body2);
     overflow: hidden;
     font-weight: bold;
-
+    pointer-events: all;
   }
 
   .toast.toast-success {
@@ -1184,7 +1183,9 @@ responsive;
   .alert {
     --backgroundLight: linear-gradient(-45deg, var(--primary), var(--primaryVariant1));
     color: var(--colorLight);
-    width: calc(var(--sidebarWidth) * 2);
+    min-width: calc(var(--sidebarWidth) * 1.75);
+    /* width: calc(var(--sidebarWidth) * 2); */
+    pointer-events: all;
   }
 
   .alert.alert-success {

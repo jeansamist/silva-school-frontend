@@ -38,7 +38,7 @@ export const FirstSchoolConfigView: FunctionComponent = () => {
 
   const onSubmit: SubmitHandler<Partial<FormValues>> = async (data: School) => {
     data.image = logo;
-    data.classes = [];
+    data.class_levels = [];
     data.users = [];
     config.configSchool(data);
   };

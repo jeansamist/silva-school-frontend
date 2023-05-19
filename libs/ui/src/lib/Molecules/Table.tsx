@@ -7,7 +7,7 @@ export type TableProps = {
   className?: string;
   thead?: ReactNode[];
   tdata: TableData[];
-  onClick?: (data: TableData, e: MouseEvent) => void;
+  onClick?: (row: TableData, e: MouseEvent) => void;
 };
 
 export const Table: FunctionComponent<TableProps> = ({

@@ -8,9 +8,9 @@ export const DashboardView: FunctionComponent = () => {
   const { current_school } = useContext(AuthContext);
   return (
     <div className="view view-dashboard">
-      <ViewHeader title="Dashboard" />
+      <ViewHeader title="Dashboard" isIndex />
       <Grid columns={4} className="mt-5 mb-3">
-        <DataCard icon={FiHome} label="Total Classes" value={current_school?.classes?.length.toString()} />
+        <DataCard icon={FiHome} label="Total Classes" value={current_school?.class_levels?.length.toString()} />
         <DataCard icon={FiUsers} label="Total Students" value="5000" color="success" />
         <DataCard label="Total Teachers" value="475" icon={FiBookOpen} color="danger" />
         <DataCard label="Total Wallet" value="55075" color="warning" />

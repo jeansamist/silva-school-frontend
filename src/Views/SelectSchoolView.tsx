@@ -40,7 +40,7 @@ export const SelectSchoolView: FunctionComponent = () => {
             onClick={(e) => {
               e.preventDefault();
               if (setcurrent_school && school.id) {
-                setcurrent_school(parseFloat(school.id));
+                setcurrent_school(school.id);
               }
             }}
             key={key}
@@ -62,7 +62,7 @@ export const SelectSchoolView: FunctionComponent = () => {
                     </Flexbox>
                     <Flexbox className="aic" gap>
                       <FiHome size={16} className="flex lh-0" />
-                      {school.classes?.length}
+                      {school.class_levels?.length}
                     </Flexbox>
                     <Flexbox className="aic" gap>
                       <FiUsers size={16} className="flex lh-0" />

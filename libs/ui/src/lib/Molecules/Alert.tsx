@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, FunctionComponent, useState, MouseEvent } from "react";
+import React, { PropsWithChildren, FunctionComponent, useState, MouseEvent, ReactNode } from "react";
 import { IconType } from "react-icons";
 import { Card } from "./Card";
 import { Heading } from "../Atoms/Heading";
@@ -10,7 +10,7 @@ export type AlertProps = PropsWithChildren<{
   className?: string;
   type?: string;
   icon?: IconType | null;
-  title?: string;
+  title?: ReactNode;
   onClick?: (e?: MouseEvent) => void;
   onClose?: (e?: MouseEvent) => void;
 }>;

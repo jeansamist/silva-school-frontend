@@ -18,33 +18,39 @@ import { ClassView } from "../Views/ClassView";
 import { ClassRoomView } from "../Views/ClassRoomView";
 import { SelectSchoolView } from "../Views/SelectSchoolView";
 import { ApiProvider } from "../Contexts/ApiContext";
+import { ToastProvider } from "../Contexts/ToastContext";
+import { AlertProvider } from "../Contexts/AlertContext";
 export function App() {
   return (
     <LoadingProvider>
       <ConfigProvider>
         <AuthProvider>
           <ApiProvider>
-            <Router>
-              <Routes>
-                <Route path="/" element={<AppLayout />}>
-                  <Route path="/" element={<Index />}>
-                    <Route index element={<DashboardView />} />
-                    <Route path="/classes" element={<ClassesView />} />
-                    <Route path="/classes/:class_level_id" element={<ClassView />} />
-                    <Route path="/classes/:class_level_id/:class_room_id" element={<ClassRoomView />} />
-                  </Route>
-                  <Route path="/selectschool" element={<SelectSchoolView />} />
-                  <Route path="/config" element={<ConfigLayout />}>
-                    <Route index element={<ConfigView />} />
-                    <Route path="firstadmin" element={<FirstAdminConfigView />} />
-                    <Route path="firstschool" element={<FirstSchoolConfigView />} />
-                  </Route>
-                  <Route path="/auth" element={<AuthLayout />}>
-                    <Route index element={<LoginAuthView />} />
-                  </Route>
-                </Route>
-              </Routes>
-            </Router>
+            <ToastProvider>
+              <AlertProvider>
+                <Router>
+                  <Routes>
+                    <Route path="/" element={<AppLayout />}>
+                      <Route path="/" element={<Index />}>
+                        <Route index element={<DashboardView />} />
+                        <Route path="/classes" element={<ClassesView />} />
+                        <Route path="/classes/:class_level_id" element={<ClassView />} />
+                        <Route path="/classes/:class_level_id/:class_room_id" element={<ClassRoomView />} />
+                      </Route>
+                      <Route path="/selectschool" element={<SelectSchoolView />} />
+                      <Route path="/config" element={<ConfigLayout />}>
+                        <Route index element={<ConfigView />} />
+                        <Route path="firstadmin" element={<FirstAdminConfigView />} />
+                        <Route path="firstschool" element={<FirstSchoolConfigView />} />
+                      </Route>
+                      <Route path="/auth" element={<AuthLayout />}>
+                        <Route index element={<LoginAuthView />} />
+                      </Route>
+                    </Route>
+                  </Routes>
+                </Router>
+              </AlertProvider>
+            </ToastProvider>
           </ApiProvider>
         </AuthProvider>
       </ConfigProvider>

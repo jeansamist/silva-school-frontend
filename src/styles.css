@@ -52,3 +52,18 @@
 .select_school_image {
   width: 50px;
 }
+
+.toasts-container {
+  position: fixed;
+  top: 0;
+  overflow-y: auto;
+  min-width: calc(var(--sidebarWidth) * 1.75);
+  height: 100vh;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5em;
+  padding: 1.5em;
+  justify-content: flex-end;
+  pointer-events: none;
+}

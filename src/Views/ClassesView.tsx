@@ -1,23 +1,48 @@
 import { Badge, Brand, Button, Card, DataCard, Flexbox, Grid, Header, Select, Table, TableData } from "@silva-school-frontend/ui";
-import { FunctionComponent, MouseEvent, useState } from "react";
+import { FunctionComponent, MouseEvent, useState, useEffect, useContext } from "react";
 import { FiHome, FiPercent } from "react-icons/fi";
 import { ViewHeader } from "../Components/Elements/ViewHeader";
 import { useNavigate } from "react-router-dom";
 import { CreateClassLevelModal } from "../Modals/CreateClassLevelModal";
+import { AuthContext } from "../Contexts/AuthContext";
+import { ApiContext } from "../Contexts/ApiContext";
+import { ClassLevel } from "@silva-school-frontend/models";
 
 export const ClassesView: FunctionComponent = () => {
   const navigate = useNavigate();
+  const { current_school } = useContext(AuthContext);
+  const { api } = useContext(ApiContext);
   const [createClassLevelModalStatus, setcreateClassLevelModalStatus] = useState(false);
+  const [class_levels, setclass_levels] = useState<ClassLevel[]>();
+  const [totalClasses, settotalClasses] = useState<number>(0);
   function navigateToClassLevel(data: TableData, e: MouseEvent) {
-    navigate("./" + data.data[0]);
+    navigate("./" + data.data[1]);
   }
+  useEffect(() => {
+    api
+      .get<ClassLevel[]>("/class", {
+        headers: {
+          "School-Id": current_school?.id,
+        },
+      })
+      .then(({ data }) => {
+        let nbr = 0;
+        data.forEach((c) => {
+          const x = c.classrooms?.length;
+          if (x) nbr += x;
+        });
+        settotalClasses(nbr);
+        setclass_levels(data);
+      })
+      .catch(console.log);
+  }, [api, createClassLevelModalStatus]);
 
   return (
     <div className="view view-classes">
-      <ViewHeader title="Classes Manager" />
+      <ViewHeader title="Classes Manager" isIndex />
       <Grid columns={3} className="mt-5 mb-3">
-        <DataCard icon={FiHome} label="Total Class Levels" value="5" color="danger" />
-        <DataCard icon={FiHome} label="Total Class Rooms" value="15" color="warning" />
+        <DataCard icon={FiHome} label="Total Class Levels" value={current_school?.class_levels?.length.toString()} color="danger" />
+        <DataCard icon={FiHome} label="Total Class Rooms" value={totalClasses.toString()} color="warning" />
         <DataCard icon={FiPercent} label="School Success Percentage" value="76.757%" color="success" />
       </Grid>
       {/* <Flexbox className="view-actions mt-3 mb-3 aic jcsb" gap>
@@ -44,14 +69,22 @@ export const ClassesView: FunctionComponent = () => {
         >
           <Table
             onClick={navigateToClassLevel}
-            thead={["Class Name", "Class Level", "Total Students", "Success Percentage"]}
-            tdata={[
-              new TableData(["6e", 1, 200, <Badge type="success">85.58%</Badge>]),
-              new TableData(["5e", 2, 800, <Badge type="success">75.02%</Badge>]),
-              new TableData(["4e", 3, 700, <Badge type="warning">55.72%</Badge>]),
-              new TableData(["3e", 4, 850, <Badge type="success">89.52%</Badge>]),
-              new TableData(["2nd", 5, 950, <Badge type="danger">49.82%</Badge>]),
-            ]}
+            thead={[<b>#</b>, "Class Level Id", "Class Name", "Class Level", "Total Students", "Success Percentage"]}
+            tdata={
+              class_levels
+                ? class_levels.map(
+                    (class_level, key) =>
+                      new TableData([
+                        <b>{key + 1}</b>,
+                        class_level.id,
+                        class_level.name,
+                        class_level.level,
+                        800,
+                        <Badge type="success">85.58%</Badge>,
+                      ])
+                  )
+                : []
+            }
           ></Table>
         </Card>
       </div>

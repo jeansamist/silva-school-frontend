@@ -6,31 +6,36 @@ import { FiDollarSign, FiHome, FiPercent } from "react-icons/fi";
 import Loading from "react-loading";
 import * as yup from "yup";
 import { AuthContext } from "../Contexts/AuthContext";
+import { ApiContext } from "../Contexts/ApiContext";
+import { ClassLevel } from "@silva-school-frontend/models";
+import { AxiosError } from "axios";
 
 export type CreateClassLevelModalProps = {
   isVisible?: boolean;
   setter?: (status: boolean) => void;
 };
+
 const schema = yup.object({
   name: yup.string().required(),
   level: yup.number().min(0).required(),
   current_price: yup.number().min(1).max(2147483647).required(),
   new_student_price: yup.number().min(1).max(2147483647).required(),
 });
+
+// Component
 export const CreateClassLevelModal: FunctionComponent<CreateClassLevelModalProps> = ({
   isVisible = false,
   setter = () => {
     return;
   },
 }) => {
-  type FormValues = {
-    name: string;
-    level: number;
-    current_price: number;
-    new_student_price: number;
+  type FormValues = ClassLevel;
+  type CreateClassLevelError = {
+    level: string[];
   };
   const auth = useContext(AuthContext);
-  const [error, seterror] = useState<string>();
+  const { api } = useContext(ApiContext);
+  const [error, seterror] = useState<CreateClassLevelError>();
 
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
     mode: "onChange",
@@ -38,8 +43,18 @@ export const CreateClassLevelModal: FunctionComponent<CreateClassLevelModalProps
   });
 
   const onSubmit: SubmitHandler<Partial<FormValues>> = async (data) => {
-    console.log(data);
-    return;
+    data.school = auth.current_school?.id;
+    data.subjects = [];
+    api
+      .post("/class", data)
+      .then((response) => {
+        setter(false);
+      })
+      .catch((reason_) => {
+        const reason = reason_ as AxiosError;
+        const err = reason.response?.data as CreateClassLevelError;
+        seterror(err);
+      });
   };
 
   return (
@@ -72,7 +87,7 @@ export const CreateClassLevelModal: FunctionComponent<CreateClassLevelModalProps
         </Button>
         {error !== undefined ? (
           <div className="mt-1" style={{ color: "var(--red)", textAlign: "center" }}>
-            {error}
+            {error.level.map((err) => err)}
           </div>
         ) : (
           ""
