@@ -37,13 +37,13 @@ export const Button: FunctionComponent<ButtonProps> = ({
     <button className={`btn btn-${type} btn-${size}${disabled ? " btn-disabled" : ""}${className ? ` ${className}` : ""}`} onClick={handdleClick}>
       <div className={`flex ${(label || children) && type === "large" ? " jcc " : " jcsa "} aic${label || children ? " flex-gap" : ""}`}>
         {LeftIcon && (
-          <div className="left-icon lh-0">
+          <div className="left-icon flex lh-0">
             <LeftIcon />
           </div>
         )}
         {label ? <div className="content">{label}</div> : children ? <div className="content">{children}</div> : ""}
         {RightIcon && (
-          <div className="right-icon lh-0">
+          <div className="right-icon flex lh-0">
             <RightIcon />
           </div>
         )}

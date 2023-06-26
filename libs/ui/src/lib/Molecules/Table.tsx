@@ -1,7 +1,6 @@
 import React, { FunctionComponent, MouseEvent, ReactNode } from "react";
-import { Badge } from "../Atoms/Badge";
 export class TableData {
-  constructor(public data: ReactNode[]) {}
+  constructor(public data: ReactNode[], public id?: number) {}
 }
 export type TableProps = {
   className?: string;
@@ -10,19 +9,16 @@ export type TableProps = {
   onClick?: (row: TableData, e: MouseEvent) => void;
 };
 
+export function tableDataSkeleton(tableDataModel: TableData, numberOfLines: number): TableData[] {
+  const toReturn: TableData[] = [];
+  for (let i = 0; i < (numberOfLines ? numberOfLines : 1); i++) {
+    toReturn.push(tableDataModel);
+  }
+  return toReturn;
+}
 export const Table: FunctionComponent<TableProps> = ({
   thead = ["Name", "Surname", "E-mail", "Statut"],
-  tdata = [
-    {
-      data: ["Towns", "Marc Thomas", "marctowns@mail.com", <Badge type="success" label={"Singined"} />],
-    },
-    {
-      data: ["Brook", "Jean", "jeanbrook@mail.com", <Badge type="warning" label={"Pending..."} />],
-    },
-    {
-      data: ["John", "Doe", "johndoe@mail.com", <Badge type="danger" label={"Error !"} />],
-    },
-  ],
+  tdata = [],
   className = "",
   onClick = () => {
     return;

@@ -37,21 +37,26 @@ responsive;
     --primaryOpact: #6e53f46b;
     --primaryVariant1: #4b4bc4;
     --primaryVariant1Opact: #4b4bc462;
+
     --color: #050506;
     --colorLight: #fff;
-    --backgroundLight: #fff;
     --colorDark: #050506;
-    --colorInfo: #a6a6a7;
-    /* --documentBackground: #f2f0ff; */
+    --colorInfo: hsl(240, 1%, 65%);
+
     --documentBackground: #efeef3;
+    --backgroundLight: #fff;
     --backgroundDark: #140e2d;
-    --shadowDark: #0b08145d;
+
     --disabledBackground: #b8b8ba;
     --cardBackground: #fff;
     --inputBackground: #fff;
-    --border: #e1e1ee;
-    --shadow: #e8e5fd;
+    --border: hsl(240, 28%, 85%);
+    --shadow: hsla(247, 84%, 90%, 0.8);
     --greyVariant: #eef0f3;
+
+    --shadowDark: #0b08145d;
+
+
     --red: #f25353;
     --redVariant: #db4b4b;
     --redOpact: #f253534b;
@@ -1178,6 +1183,36 @@ responsive;
     color: var(--colorLight);
     background: #ffffff60;
   }
+
+  /* Skeleton Styles */
+  .skeleton-container {
+    width: 100%;
+  }
+
+  .skeleton-container>.skeleton {
+    width: 100%;
+    height: 1em;
+    margin-bottom: 0.5em;
+    background: var(--shadow);
+    border-radius: 0.2em;
+    animation: load 2.5s linear infinite;
+  }
+
+  @keyframes load {
+    0% {
+      opacity: 1;
+    }
+
+    50% {
+      opacity: 0.5;
+    }
+
+    100% {
+      opacity: 1;
+    }
+  }
+
+
 
   /* Alerts styles */
   .alert {

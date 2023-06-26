@@ -33,6 +33,7 @@ export const Alert: FunctionComponent<AlertProps> = ({
     onClick(e);
   }
   function handleClose(e: MouseEvent) {
+    e.stopPropagation();
     onClose(e);
     setvisible(false);
   }

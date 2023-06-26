@@ -7,6 +7,7 @@ export class Person {
     public sex?: string,
     public status?: string,
     public email?: string,
-    public phone?: number,
-  ){}
+    public phone?: number | string,
+    public avatar?: string
+  ) {}
 }

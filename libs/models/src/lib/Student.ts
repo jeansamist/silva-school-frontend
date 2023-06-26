@@ -1,5 +1,6 @@
 import { Person } from "./Person";
-export class User extends Person {
+import { ClassRoom } from "./ClassRoom";
+export class Student extends Person {
   constructor(
     public override first_name?: string,
     public override last_name?: string,
@@ -9,14 +10,10 @@ export class User extends Person {
     public override status?: string,
     public override email?: string,
     public override phone?: number,
-    public schools?: number[],
-    public role?: number,
-    public username?: string,
-    public password?: string
+    public classroom?: ClassRoom | number,
+    public register?: boolean,
+    public id?: number | string
   ) {
     super(first_name, last_name, birthdate, address, sex, status, email, phone);
-    if (this.schools === undefined) {
-      this.schools = [];
-    }
   }
 }

@@ -4,3 +4,4 @@ export * from "./lib/Person";
 export * from "./lib/School";
 export * from "./lib/ClassLevel";
 export * from "./lib/ClassRoom";
+export * from "./lib/Student";

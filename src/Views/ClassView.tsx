@@ -1,14 +1,30 @@
-import React, { FunctionComponent, MouseEvent, useContext, useState, useEffect } from "react";
+import React, { FunctionComponent, MouseEvent, useContext, useState, useEffect, useCallback } from "react";
 import { ViewHeader } from "../Components/Elements/ViewHeader";
-import { Badge, Brand, Card, DataCard, Flexbox, Grid, Header, Select, Table, TableData } from "@silva-school-frontend/ui";
+import {
+  Badge,
+  Brand,
+  Card,
+  DataCard,
+  Dropdown,
+  DropdownElement,
+  Flexbox,
+  Grid,
+  Header,
+  Select,
+  Skeleton,
+  Table,
+  TableData,
+} from "@silva-school-frontend/ui";
 import { Button } from "@silva-school-frontend/ui";
 import { useNavigate, useParams } from "react-router-dom";
 import { ApiContext } from "../Contexts/ApiContext";
 import { ClassLevel, ClassRoom } from "@silva-school-frontend/models";
-import { FiHome, FiPercent, FiUsers } from "react-icons/fi";
+import { FiChevronDown, FiHome, FiInfo, FiPercent, FiUserPlus, FiUsers } from "react-icons/fi";
 import { CreateClassRoomModal } from "../Modals/CreateClassRoomModal";
 import { ToastContext } from "../Contexts/ToastContext";
 import { AlertContext } from "../Contexts/AlertContext";
+import { AxiosError } from "axios";
+import { FaFilePdf, FaFileCsv } from "react-icons/fa";
 
 export const ClassView: FunctionComponent = () => {
   const { class_level_id } = useParams<{ class_level_id: string }>();
@@ -20,36 +36,78 @@ export const ClassView: FunctionComponent = () => {
   const [rerend, setrerend] = useState(false);
   const { pushToast } = useContext(ToastContext);
   const { pushAlert } = useContext(AlertContext);
+
+  const createAutomaticalyClassroom = useCallback(() => {
+    api.post("/class/" + class_level_id + "/classroom").then(() => {
+      pushToast({
+        children: "Class was been created.",
+        type: "success",
+      });
+      setrerend(!rerend);
+    });
+  }, [api, class_level_id, pushToast, rerend]);
   useEffect(() => {
     api
       .get<ClassLevel>("/class/" + class_level_id)
       .then((response) => {
         setclass_level(response.data);
       })
-      .catch(console.log);
+      .catch((reason) => {
+        const error = reason as AxiosError;
+        pushAlert({
+          title: error.code,
+          type: "danger",
+          children: (
+            <>
+              Sorry but we cannot get class level informations <br /> <i>{error.message}</i>
+            </>
+          ),
+        });
+      });
 
     api
       .get<ClassRoom[]>("/class/" + class_level_id + "/classroom")
       .then((response) => {
         if (response.data.length === 0) {
           pushAlert({
-            title: "Class Level",
-            type: "danger",
-            children: "Sorry but this class level are empty",
+            title: "",
+            icon: FiInfo,
+            type: "default",
+            onClick: createAutomaticalyClassroom,
+            children: (
+              <>
+                Sorry but this class is empty. Click here if you <br /> want automaticaly create a new classroom
+              </>
+            ),
           });
-          return;
         }
         setclassrooms(response.data);
       })
-      .catch(console.log);
-  }, [class_level_id, createClassRoomModalStatus, rerend]);
+      .catch((reason) => {
+        const error = reason as AxiosError;
+        pushAlert({
+          title: error.code,
+          type: "danger",
+          children: (
+            <>
+              Sorry but we cannot get classrooms list <br /> <i>{error.message}</i>
+            </>
+          ),
+        });
+      });
+  }, [class_level_id, createClassRoomModalStatus, rerend, api, pushAlert, createAutomaticalyClassroom]);
 
-  function action(e: MouseEvent) {
-    return;
-  }
   function navigateToClassRoom(data: TableData, e: MouseEvent) {
-    navigate("./" + data.data[1]);
+    console.log(data);
+
+    navigate("./" + data.id);
   }
+
+  const StudentTableLoadData = [
+    new TableData([<Skeleton width={64} />, <Skeleton />, <Skeleton width={64} />]),
+    new TableData([<Skeleton width={64} />, <Skeleton />, <Skeleton width={64} />]),
+    new TableData([<Skeleton width={64} />, <Skeleton />, <Skeleton width={64} />]),
+  ];
 
   return (
     <div className="view view-class">
@@ -71,28 +129,35 @@ export const ClassView: FunctionComponent = () => {
                     { label: "Class name", value: "class_name" },
                   ]}
                 />
-                <Button onClick={() => setcreateClassRoomModalStatus(true)}>Create new Class Room</Button>
-                <Button
-                  onClick={() =>
-                    api.post("/class/" + class_level_id + "/classroom").then(() => {
-                      pushToast({
-                        children: "Class was been created.",
-                        type: "success",
-                      });
-                      setrerend(!rerend);
-                    })
-                  }
+                <Dropdown
+                  position="right"
+                  elements={[
+                    new DropdownElement("#", FiHome, "Create new Class Room", "button", () => {
+                      setcreateClassRoomModalStatus(true);
+                    }),
+                    new DropdownElement("#", FiHome, "Create Automaticaly new Class Room", "button", () => {
+                      createAutomaticalyClassroom();
+                    }),
+                  ]}
                 >
-                  Create Automaticaly new Class Room
-                </Button>
+                  <Button>
+                    <div className="flex aic flex-gap">
+                      Actions <FiChevronDown style={{ transform: "translateY(1px)" }} />
+                    </div>
+                  </Button>
+                </Dropdown>
               </Flexbox>
             </Header>
           }
         >
           <Table
             onClick={navigateToClassRoom}
-            thead={[<b>#</b>, "Classroom Id", "Classroom Name"]}
-            tdata={classrooms ? classrooms.map((classroom, key) => new TableData([<b>{key + 1}</b>, classroom.id, classroom.name])) : []}
+            thead={[<b>#</b>, "Classroom Name", "Number of Students"]}
+            tdata={
+              classrooms
+                ? classrooms.map((classroom, key) => new TableData([key + 1, <b>{classroom.name}</b>, 0], classroom.id))
+                : StudentTableLoadData
+            }
           ></Table>
         </Card>
       </div>

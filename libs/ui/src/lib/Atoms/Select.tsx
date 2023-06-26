@@ -2,7 +2,7 @@ import React, { ChangeEvent, FunctionComponent, ReactNode, useState } from "reac
 import { FiChevronDown } from "react-icons/fi";
 import { motion, AnimatePresence } from "framer-motion";
 
-export type option = { label: string; value: ReactNode };
+export type option = { label: ReactNode; value: any };
 export type SelectProps = {
   options?: option[];
   label?: string;
@@ -69,7 +69,7 @@ export const Select: FunctionComponent<SelectProps> = ({
 };
 
 export type SelectSearchProps = {
-  options?: option[];
+  options?: { label: string; value: any }[];
   label?: string;
   onChange?: (newValue: option) => void;
   onSearchChange?: (newValue: string) => void;

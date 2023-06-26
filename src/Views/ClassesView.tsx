@@ -16,7 +16,7 @@ export const ClassesView: FunctionComponent = () => {
   const [class_levels, setclass_levels] = useState<ClassLevel[]>();
   const [totalClasses, settotalClasses] = useState<number>(0);
   function navigateToClassLevel(data: TableData, e: MouseEvent) {
-    navigate("./" + data.data[1]);
+    navigate("./" + data.id);
   }
   useEffect(() => {
     api
@@ -69,19 +69,15 @@ export const ClassesView: FunctionComponent = () => {
         >
           <Table
             onClick={navigateToClassLevel}
-            thead={[<b>#</b>, "Class Level Id", "Class Name", "Class Level", "Total Students", "Success Percentage"]}
+            thead={[<b>#</b>, "Class Name", "Class Level", "Total Students", "Success Percentage"]}
             tdata={
               class_levels
                 ? class_levels.map(
                     (class_level, key) =>
-                      new TableData([
-                        <b>{key + 1}</b>,
-                        class_level.id,
-                        class_level.name,
-                        class_level.level,
-                        800,
-                        <Badge type="success">85.58%</Badge>,
-                      ])
+                      new TableData(
+                        [key + 1, <b>{class_level.name}</b>, class_level.level, 800, <Badge type="success">85.58%</Badge>],
+                        class_level.id
+                      )
                   )
                 : []
             }

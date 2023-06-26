@@ -9,6 +9,7 @@ import { AuthContext } from "../Contexts/AuthContext";
 import { ApiContext } from "../Contexts/ApiContext";
 import { ClassLevel } from "@silva-school-frontend/models";
 import { AxiosError } from "axios";
+import { SubmitButton } from "../Components/SubmitButton";
 
 export type CreateClassLevelModalProps = {
   isVisible?: boolean;
@@ -72,19 +73,7 @@ export const CreateClassLevelModal: FunctionComponent<CreateClassLevelModalProps
           />
           <FieldControlled control={control} rightIcon={FiDollarSign} name="current_price" type="number" label="Class Level Current Price" />
         </div>
-        <Button type="primary" size="large" disabled={formState ? !formState.isValid || formState.isSubmitting : true}>
-          {formState ? (
-            formState.isSubmitting ? (
-              <div className="loader">
-                <Loading width={25} height={25} type="spokes" color="#fff" />
-              </div>
-            ) : (
-              <div className="label">Create Class Level</div>
-            )
-          ) : (
-            <div className="label">Create Class Level</div>
-          )}
-        </Button>
+        <SubmitButton formState={formState}>Create Class Level</SubmitButton>
         {error !== undefined ? (
           <div className="mt-1" style={{ color: "var(--red)", textAlign: "center" }}>
             {error.level.map((err) => err)}
