@@ -1348,6 +1348,18 @@ responsive;
     margin-top: calc(var(--baseSize) * 3);
   }
 
+  .w100 {
+    width: 100%;
+  }
+
+  .w50 {
+    width: 50%;
+  }
+
+  .w33 {
+    width: calc(100% / 3);
+  }
+
   .lh-0 {
     line-height: 1;
     /* vertical-align: middle; */

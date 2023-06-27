@@ -8,6 +8,7 @@ export class Person {
     public status?: string,
     public email?: string,
     public phone?: number | string,
-    public avatar?: string
+    public avatar?: string | File,
+    public code?: string
   ) {}
 }

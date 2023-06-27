@@ -5,14 +5,15 @@ import { Link } from "react-router-dom";
 export type ViewHeaderProps = {
   title: ReactNode;
   isIndex?: boolean;
+  backURL?: string;
 };
-export function ViewHeader({ title, isIndex = false }: ViewHeaderProps) {
+export function ViewHeader({ title, isIndex = false, backURL }: ViewHeaderProps) {
   return (
     <div className="viewheader">
       <Heading type="2">
         <Flexbox className="aic" gap>
           {!isIndex && (
-            <Link to={"./../"}>
+            <Link to={backURL ? backURL : "./../../"}>
               <FiArrowLeft size={32} className="flex lh-0" />
             </Link>
           )}

@@ -1,8 +1,7 @@
-import React, { FunctionComponent, MouseEvent, useContext, useState, useEffect, useCallback } from "react";
-import { ViewHeader } from "../Components/Elements/ViewHeader";
+import { ClassLevel, ClassRoom } from "@silva-school-frontend/models";
 import {
-  Badge,
   Brand,
+  Button,
   Card,
   DataCard,
   Dropdown,
@@ -14,17 +13,17 @@ import {
   Skeleton,
   Table,
   TableData,
+  tableDataSkeleton,
 } from "@silva-school-frontend/ui";
-import { Button } from "@silva-school-frontend/ui";
-import { useNavigate, useParams } from "react-router-dom";
-import { ApiContext } from "../Contexts/ApiContext";
-import { ClassLevel, ClassRoom } from "@silva-school-frontend/models";
-import { FiChevronDown, FiHome, FiInfo, FiPercent, FiUserPlus, FiUsers } from "react-icons/fi";
-import { CreateClassRoomModal } from "../Modals/CreateClassRoomModal";
-import { ToastContext } from "../Contexts/ToastContext";
-import { AlertContext } from "../Contexts/AlertContext";
 import { AxiosError } from "axios";
-import { FaFilePdf, FaFileCsv } from "react-icons/fa";
+import { FunctionComponent, MouseEvent, useCallback, useContext, useEffect, useState } from "react";
+import { FiChevronDown, FiHome, FiInfo, FiPercent, FiTrash, FiUsers } from "react-icons/fi";
+import { useNavigate, useParams } from "react-router-dom";
+import { ViewHeader } from "../Components/Elements/ViewHeader";
+import { AlertContext } from "../Contexts/AlertContext";
+import { ApiContext } from "../Contexts/ApiContext";
+import { ToastContext } from "../Contexts/ToastContext";
+import { CreateClassRoomModal } from "../Modals/CreateClassRoomModal";
 
 export const ClassView: FunctionComponent = () => {
   const { class_level_id } = useParams<{ class_level_id: string }>();
@@ -97,17 +96,11 @@ export const ClassView: FunctionComponent = () => {
       });
   }, [class_level_id, createClassRoomModalStatus, rerend, api, pushAlert, createAutomaticalyClassroom]);
 
-  function navigateToClassRoom(data: TableData, e: MouseEvent) {
-    console.log(data);
-
-    navigate("./" + data.id);
+  function navigateToClassRoom(data: TableData) {
+    navigate("./classroom/" + data.id);
   }
 
-  const StudentTableLoadData = [
-    new TableData([<Skeleton width={64} />, <Skeleton />, <Skeleton width={64} />]),
-    new TableData([<Skeleton width={64} />, <Skeleton />, <Skeleton width={64} />]),
-    new TableData([<Skeleton width={64} />, <Skeleton />, <Skeleton width={64} />]),
-  ];
+  const StudentTableLoadData = tableDataSkeleton(new TableData([<Skeleton width={64} />, <Skeleton />, <Skeleton width={64} />]), 5);
 
   return (
     <div className="view view-class">
@@ -137,6 +130,9 @@ export const ClassView: FunctionComponent = () => {
                     }),
                     new DropdownElement("#", FiHome, "Create Automaticaly new Class Room", "button", () => {
                       createAutomaticalyClassroom();
+                    }),
+                    new DropdownElement("#", FiTrash, <b style={{ color: "var(--red)" }}>Delete Classlevel</b>, "button", () => {
+                      return;
                     }),
                   ]}
                 >

@@ -1,6 +1,20 @@
-import { Badge, Brand, Button, Card, DataCard, Flexbox, Grid, Header, Select, Table, TableData } from "@silva-school-frontend/ui";
+import {
+  Badge,
+  Brand,
+  Button,
+  Card,
+  DataCard,
+  Dropdown,
+  DropdownElement,
+  Flexbox,
+  Grid,
+  Header,
+  Select,
+  Table,
+  TableData,
+} from "@silva-school-frontend/ui";
 import { FunctionComponent, MouseEvent, useState, useEffect, useContext } from "react";
-import { FiHome, FiPercent } from "react-icons/fi";
+import { FiChevronDown, FiHome, FiPercent, FiTrash } from "react-icons/fi";
 import { ViewHeader } from "../Components/Elements/ViewHeader";
 import { useNavigate } from "react-router-dom";
 import { CreateClassLevelModal } from "../Modals/CreateClassLevelModal";
@@ -16,7 +30,7 @@ export const ClassesView: FunctionComponent = () => {
   const [class_levels, setclass_levels] = useState<ClassLevel[]>();
   const [totalClasses, settotalClasses] = useState<number>(0);
   function navigateToClassLevel(data: TableData, e: MouseEvent) {
-    navigate("./" + data.id);
+    navigate("./class_level/" + data.id);
   }
   useEffect(() => {
     api
@@ -35,7 +49,7 @@ export const ClassesView: FunctionComponent = () => {
         setclass_levels(data);
       })
       .catch(console.log);
-  }, [api, createClassLevelModalStatus]);
+  }, [api, createClassLevelModalStatus, current_school]);
 
   return (
     <div className="view view-classes">
@@ -62,7 +76,20 @@ export const ClassesView: FunctionComponent = () => {
                     { label: "Class name", value: "class_name" },
                   ]}
                 />
-                <Button onClick={() => setcreateClassLevelModalStatus(true)}>Create new Class Level</Button>
+                <Dropdown
+                  position="right"
+                  elements={[
+                    new DropdownElement("#", FiHome, "Create new Class Level", "button", () => {
+                      setcreateClassLevelModalStatus(true);
+                    }),
+                  ]}
+                >
+                  <Button>
+                    <div className="flex aic flex-gap">
+                      Actions <FiChevronDown style={{ transform: "translateY(1px)" }} />
+                    </div>
+                  </Button>
+                </Dropdown>
               </Flexbox>
             </Header>
           }

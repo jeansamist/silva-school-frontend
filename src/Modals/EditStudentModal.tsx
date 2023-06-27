@@ -15,7 +15,7 @@ import { FaFemale, FaMale } from "react-icons/fa";
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { useDropzone } from "react-dropzone";
 
-export type CreateStudentModalProps = {
+export type EditStudentModalProps = {
   isVisible?: boolean;
   setter?: (status: boolean) => void;
   classroom_id: number;
@@ -31,7 +31,7 @@ const schema = yup.object({
 });
 
 // Component
-export const CreateStudentModal: FunctionComponent<CreateStudentModalProps> = ({
+export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
   isVisible = false,
   setter = () => {
     return;

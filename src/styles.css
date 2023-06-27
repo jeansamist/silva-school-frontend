@@ -67,3 +67,9 @@
   justify-content: flex-end;
   pointer-events: none;
 }
+
+@media (max-width: 1150px) {
+  .show-student-grid {
+    grid-template-columns: repeat(1, 1fr) !important;
+  }
+}

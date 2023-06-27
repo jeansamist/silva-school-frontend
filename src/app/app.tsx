@@ -20,6 +20,7 @@ import { SelectSchoolView } from "../Views/SelectSchoolView";
 import { ApiProvider } from "../Contexts/ApiContext";
 import { ToastProvider } from "../Contexts/ToastContext";
 import { AlertProvider } from "../Contexts/AlertContext";
+import { ShowStudentView } from "../Views/ShowStudentView";
 export function App() {
   return (
     <LoadingProvider>
@@ -34,8 +35,12 @@ export function App() {
                       <Route path="/" element={<Index />}>
                         <Route index element={<DashboardView />} />
                         <Route path="/classes" element={<ClassesView />} />
-                        <Route path="/classes/:class_level_id" element={<ClassView />} />
-                        <Route path="/classes/:class_level_id/:class_room_id" element={<ClassRoomView />} />
+                        <Route path="/classes/class_level/:class_level_id" element={<ClassView />} />
+                        <Route path="/classes/class_level/:class_level_id/classroom/:class_room_id" element={<ClassRoomView />} />
+                        <Route
+                          path="/classes/class_level/:class_level_id/classroom/:class_room_id/student/:student_id"
+                          element={<ShowStudentView />}
+                        />
                       </Route>
                       <Route path="/selectschool" element={<SelectSchoolView />} />
                       <Route path="/config" element={<ConfigLayout />}>

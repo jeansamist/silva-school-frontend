@@ -1,6 +1,6 @@
 import React, { FunctionComponent, MouseEvent, ReactNode } from "react";
 export class TableData {
-  constructor(public data: ReactNode[], public id?: number) {}
+  constructor(public data: ReactNode[], public id?: number | string) {}
 }
 export type TableProps = {
   className?: string;
