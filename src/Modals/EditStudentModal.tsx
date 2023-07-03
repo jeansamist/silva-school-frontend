@@ -18,7 +18,7 @@ import { useDropzone } from "react-dropzone";
 export type EditStudentModalProps = {
   isVisible?: boolean;
   setter?: (status: boolean) => void;
-  classroom_id: number;
+  student: Student;
 };
 
 const schema = yup.object({
@@ -36,13 +36,13 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
   setter = () => {
     return;
   },
-  classroom_id,
+  student,
 }) => {
   type FormValues = Student;
   type CreateClassLevelError = {
     level: string[];
   };
-  const { api } = useContext(ApiContext);
+  const { api, BAKEND_URL } = useContext(ApiContext);
   const [sex, setsex] = useState("M");
   const [error, seterror] = useState<CreateClassLevelError>();
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
@@ -77,7 +77,7 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
     const formdata = new FormData();
     data.birthdate = dayjs(data.birthdate).format("YYYY-MM-DD");
     data.sex = sex;
-    data.classroom = classroom_id;
+    data.classroom = student.classroom;
     if (avatarFile !== undefined) data.avatar = avatarFile;
     for (const key in data) {
       const e = data as any;
@@ -97,17 +97,77 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
   };
 
   return (
-    <Modal title="Create new Student" isVisible={isVisible} onClose={setter}>
+    <Modal title="Edit Student" isVisible={isVisible} onClose={setter}>
       <form action="" onSubmit={handleSubmit(onSubmit)}>
         <div className="group-fields">
+          <Grid columns={2}>
+            <Select
+              label="Class Level"
+              onChange={({ value }) => {
+                setsex(value);
+              }}
+              options={[
+                {
+                  label: (
+                    <div className="flex aic flex-gap">
+                      <FaMale className="flex lh-0" /> Male
+                    </div>
+                  ),
+                  value: "M",
+                },
+                {
+                  label: (
+                    <div className="flex aic flex-gap">
+                      <FaFemale className="flex lh-0" /> Female
+                    </div>
+                  ),
+                  value: "F",
+                },
+              ]}
+            />
+            <Select
+              label="Class Room"
+              onChange={({ value }) => {
+                setsex(value);
+              }}
+              options={[
+                {
+                  label: (
+                    <div className="flex aic flex-gap">
+                      <FaMale className="flex lh-0" /> Male
+                    </div>
+                  ),
+                  value: "M",
+                },
+                {
+                  label: (
+                    <div className="flex aic flex-gap">
+                      <FaFemale className="flex lh-0" /> Female
+                    </div>
+                  ),
+                  value: "F",
+                },
+              ]}
+            />
+          </Grid>
           <Flexbox className="aic" gap>
             <div {...getRootProps()} className="student-avatar" style={{ cursor: "pointer" }}>
               {/* <input {...getInputProps} /> */}
-              <Avatar size="large" image={avatarFile ? avatarImage : sex === "M" ? male : female} />
+              <Avatar
+                size="large"
+                image={avatarFile ? avatarImage : student.avatar ? BAKEND_URL + student.avatar : student.sex === "M" ? male : female}
+              />
             </div>
             <div className="group-fields" style={{ margin: 0, width: "100%" }}>
-              <FieldControlled control={control} rightIcon={FiUser} name="first_name" label="First Name" />
-              <FieldControlled control={control} rightIcon={FiUser} name="last_name" label="Last Name" />
+              <FieldControlled
+                control={control}
+                defaultValue={student.first_name}
+                activated
+                rightIcon={FiUser}
+                name="first_name"
+                label="First Name"
+              />
+              <FieldControlled control={control} defaultValue={student.last_name} activated rightIcon={FiUser} name="last_name" label="Last Name" />
             </div>
           </Flexbox>
           <Grid columns={2}>
@@ -135,13 +195,21 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
                 },
               ]}
             />
-            <FieldControlled control={control} rightIcon={FiCalendar} name="birthdate" label="Birthdate" type="date" />
+            <FieldControlled
+              control={control}
+              rightIcon={FiCalendar}
+              name="birthdate"
+              label="Birthdate"
+              defaultValue={student.birthdate}
+              activated
+              type="date"
+            />
           </Grid>
-          <FieldControlled control={control} rightIcon={FiMapPin} name="address" label="Adsress" />
-          <FieldControlled control={control} rightIcon={FiPhone} type="tel" name="phone" label="Phone" />
-          <FieldControlled control={control} rightIcon={FiMail} name="email" label="E-mail (Optional)" />
+          <FieldControlled control={control} rightIcon={FiMapPin} defaultValue={student.address} activated name="address" label="Adsress" />
+          <FieldControlled control={control} rightIcon={FiPhone} defaultValue={student.phone} activated type="tel" name="phone" label="Phone" />
+          <FieldControlled control={control} rightIcon={FiMail} defaultValue={student.email} activated name="email" label="E-mail (Optional)" />
         </div>
-        <SubmitButton formState={formState}>Create Student</SubmitButton>
+        <SubmitButton formState={formState}>Edit Student</SubmitButton>
         {error !== undefined ? (
           <div className="mt-1" style={{ color: "var(--red)", textAlign: "center" }}>
             {error.level.map((err) => err)}
