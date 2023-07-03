@@ -8,9 +8,12 @@ import { ViewHeader } from "../Components/Elements/ViewHeader";
 import { StudentCard } from "../Components/StudentCard";
 import { AlertContext } from "../Contexts/AlertContext";
 import { ApiContext } from "../Contexts/ApiContext";
+import { EditStudentModal } from "../Modals/EditStudentModal";
 
 export const ShowStudentView: FunctionComponent = () => {
   const { class_room_id, class_level_id, student_id } = useParams<{ class_room_id: string; class_level_id: string; student_id: string }>();
+
+  const [editStudentModalStatus, seteditStudentModalStatus] = useState<boolean>(false);
 
   const { api } = useContext(ApiContext);
   const [student, setstudent] = useState<Student>();
@@ -52,7 +55,7 @@ export const ShowStudentView: FunctionComponent = () => {
                     position="right"
                     elements={[
                       new DropdownElement("#", FiEdit, "Edit Student", "button", () => {
-                        return;
+                        seteditStudentModalStatus(true);
                       }),
                       new DropdownElement("#", FiUserCheck, "Register Student", "button", () => {
                         return;
@@ -98,6 +101,9 @@ export const ShowStudentView: FunctionComponent = () => {
             </div>
           </Card>
         </Grid>
+      </div>
+      <div className="modals">
+        {student && <EditStudentModal isVisible={editStudentModalStatus} setter={seteditStudentModalStatus} student={student} />}
       </div>
     </div>
   );

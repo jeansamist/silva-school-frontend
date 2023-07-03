@@ -9,7 +9,7 @@ export type FieldProps = {
   onChange?: (newValue: string, e: ChangeEvent) => void;
   valid?: boolean;
   activated?: boolean;
-  defaultValue?: string | number;
+  defaultValue?: string | number | Date;
   size?: string;
   disabled?: boolean;
   className?: string;
@@ -35,7 +35,7 @@ export const Field: FunctionComponent<FieldProps> = ({
 }) => {
   const [active, setactive] = useState<boolean>(false);
   const [isValid, setisValid] = useState<boolean>(false);
-  const [value, setvalue] = useState<string | number>("");
+  const [value, setvalue] = useState<string | number | Date>("");
   useEffect(() => {
     setvalue(defaultValue);
     setactive(activated);
@@ -76,7 +76,7 @@ export const Field: FunctionComponent<FieldProps> = ({
         </div>
       )}
       <div className={`input-container${RightIcon ? "" : " pr-3"}${LeftIcon ? "" : " pl-3"}`}>
-        <input disabled={disabled} type={type} value={value} onChange={handleChange} onFocus={handleFocus} onBlur={handleBlur} />
+        <input disabled={disabled} type={type} value={value.toString()} onChange={handleChange} onFocus={handleFocus} onBlur={handleBlur} />
         <label className={`${LeftIcon ? "" : "no-left"}`}>{label}</label>
       </div>
       {RightIcon && (
