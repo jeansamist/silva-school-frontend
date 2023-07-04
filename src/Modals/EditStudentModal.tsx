@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Student } from "@silva-school-frontend/models";
+import { ClassLevel, ClassRoom, Student } from "@silva-school-frontend/models";
 import { Avatar, FieldControlled, Flexbox, Grid, Heading, Modal, Radio, Select } from "@silva-school-frontend/ui";
 import { AxiosError } from "axios";
 import dayjs from "dayjs";
@@ -12,6 +12,7 @@ import { ApiContext } from "../Contexts/ApiContext";
 import male from "./../assets/images/M.png";
 import female from "./../assets/images/F.png";
 import { FaFemale, FaMale } from "react-icons/fa";
+import { AuthContext } from "../Contexts/AuthContext";
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { useDropzone } from "react-dropzone";
 
@@ -19,6 +20,7 @@ export type EditStudentModalProps = {
   isVisible?: boolean;
   setter?: (status: boolean) => void;
   student: Student;
+  class_level_id: number | string;
 };
 
 const schema = yup.object({
@@ -37,14 +39,18 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
     return;
   },
   student,
+  class_level_id,
 }) => {
   type FormValues = Student;
   type CreateClassLevelError = {
     level: string[];
   };
   const { api, BAKEND_URL } = useContext(ApiContext);
+  const [classLevels, setclassLevels] = useState<ClassLevel[]>([]);
+  const [classRooms, setclassRooms] = useState<ClassRoom[]>([]);
   const [sex, setsex] = useState("M");
   const [error, seterror] = useState<CreateClassLevelError>();
+  const { current_school } = useContext(AuthContext);
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
     mode: "onChange",
     resolver: yupResolver(schema),
@@ -61,8 +67,23 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
   });
   useEffect(() => {
     setavatarFile(undefined);
-  }, [isVisible]);
+    if (isVisible === true) {
+      api
+        .get<ClassLevel[]>("/class", {
+          headers: {
+            "School-Id": current_school?.id,
+          },
+        })
+        .then(({ data }) => {
+          setclassLevels(data);
+        });
 
+      api.get<ClassRoom[]>("/class/" + class_level_id + "/classroom").then(({ data }) => {
+        setclassRooms(data);
+      });
+    }
+  }, [isVisible, api, current_school]);
+  // useEffect(() => {}, [classLevels])
   useEffect(() => {
     if (avatarFile) {
       const reader = new FileReader();
@@ -104,50 +125,27 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
             <Select
               label="Class Level"
               onChange={({ value }) => {
-                setsex(value);
+                api.get<ClassRoom[]>("/class/" + value + "/classroom").then(({ data }) => {
+                  setclassRooms(data);
+                });
               }}
-              options={[
-                {
-                  label: (
-                    <div className="flex aic flex-gap">
-                      <FaMale className="flex lh-0" /> Male
-                    </div>
-                  ),
-                  value: "M",
-                },
-                {
-                  label: (
-                    <div className="flex aic flex-gap">
-                      <FaFemale className="flex lh-0" /> Female
-                    </div>
-                  ),
-                  value: "F",
-                },
-              ]}
+              options={classLevels.map((classLevel) => ({
+                label: <div>{classLevel.name}</div>,
+                value: classLevel.id,
+              }))}
             />
             <Select
               label="Class Room"
               onChange={({ value }) => {
                 setsex(value);
               }}
-              options={[
-                {
-                  label: (
-                    <div className="flex aic flex-gap">
-                      <FaMale className="flex lh-0" /> Male
-                    </div>
-                  ),
-                  value: "M",
-                },
-                {
-                  label: (
-                    <div className="flex aic flex-gap">
-                      <FaFemale className="flex lh-0" /> Female
-                    </div>
-                  ),
-                  value: "F",
-                },
-              ]}
+              options={
+                classRooms &&
+                classRooms.map((classRoom) => ({
+                  label: <div>{classRoom.name}</div>,
+                  value: classRoom.id,
+                }))
+              }
             />
           </Grid>
           <Flexbox className="aic" gap>

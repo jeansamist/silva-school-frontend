@@ -103,7 +103,9 @@ export const ShowStudentView: FunctionComponent = () => {
         </Grid>
       </div>
       <div className="modals">
-        {student && <EditStudentModal isVisible={editStudentModalStatus} setter={seteditStudentModalStatus} student={student} />}
+        {student && class_level_id && (
+          <EditStudentModal class_level_id={class_level_id} isVisible={editStudentModalStatus} setter={seteditStudentModalStatus} student={student} />
+        )}
       </div>
     </div>
   );
