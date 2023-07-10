@@ -23,6 +23,7 @@ export type SidebarProps = PropsWithChildren<{
   userAvatar?: string;
   userName?: ReactNode;
   userRole?: ReactNode;
+  onToggle?: () => void;
 }>;
 function SidebarLinkJSX({ to = "/", Ico = FiSquare, label = "Link", active = false, opened = true, _ = true }) {
   const [_active, setactive] = useState(active);
@@ -60,6 +61,9 @@ export const Sidebar: FunctionComponent<SidebarProps> = ({
   userAvatar = avatar,
   userName = "BAHA Ephraim",
   userRole = "Administrator",
+  onToggle = () => {
+    return;
+  },
 }) => {
   const linksRef = useRef<HTMLDivElement>(null);
   const [opened, setopened] = useState(true);
@@ -110,6 +114,7 @@ export const Sidebar: FunctionComponent<SidebarProps> = ({
               className="menu-btn flex lh-0"
               size={20}
               onClick={() => {
+                onToggle();
                 if (opened) {
                   set_opened(!_opened);
                   setTimeout(() => {

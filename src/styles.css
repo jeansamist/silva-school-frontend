@@ -41,6 +41,12 @@
 .main-container {
   display: grid;
   grid-template-columns: var(--sidebarWidth) 1fr;
+  transition: all 0.3s linear 0.0s;
+}
+
+.main-container.open {
+  grid-template-columns: var(--sidebarCloseWidth) 1fr;
+  transition: all 0.3s linear 0.3s;
 }
 
 .wraper {

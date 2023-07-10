@@ -151,7 +151,7 @@ export const ClassView: FunctionComponent = () => {
             thead={[<b>#</b>, "Classroom Name", "Number of Students"]}
             tdata={
               classrooms
-                ? classrooms.map((classroom, key) => new TableData([key + 1, <b>{classroom.name}</b>, 0], classroom.id))
+                ? classrooms.map((classroom, key) => new TableData([key + 1, <b>{classroom.name}</b>, classroom.students?.length], classroom.id))
                 : StudentTableLoadData
             }
           ></Table>

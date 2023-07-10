@@ -24,12 +24,12 @@ export type EditStudentModalProps = {
 };
 
 const schema = yup.object({
-  first_name: yup.string().required(),
-  last_name: yup.string().required(),
-  address: yup.string().required(),
+  first_name: yup.string(),
+  last_name: yup.string(),
+  address: yup.string(),
   email: yup.string().email(),
-  phone: yup.number().required(),
-  birthdate: yup.date().max(new Date(), "birthdate field must be at earlier than to day").required(),
+  phone: yup.number(),
+  birthdate: yup.date().max(new Date(), "birthdate field must be at earlier than to day"),
 });
 
 // Component
@@ -46,9 +46,10 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
     level: string[];
   };
   const { api, BAKEND_URL } = useContext(ApiContext);
+  const [selectedClassRoom, setselectedClassRoom] = useState(student.classroom);
   const [classLevels, setclassLevels] = useState<ClassLevel[]>([]);
   const [classRooms, setclassRooms] = useState<ClassRoom[]>([]);
-  const [sex, setsex] = useState("M");
+  const [sex, setsex] = useState(student.sex);
   const [error, seterror] = useState<CreateClassLevelError>();
   const { current_school } = useContext(AuthContext);
   const { control, formState, handleSubmit } = useForm<Partial<FormValues>>({
@@ -82,7 +83,7 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
         setclassRooms(data);
       });
     }
-  }, [isVisible, api, current_school]);
+  }, [isVisible, api, current_school, class_level_id]);
   // useEffect(() => {}, [classLevels])
   useEffect(() => {
     if (avatarFile) {
@@ -98,7 +99,7 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
     const formdata = new FormData();
     data.birthdate = dayjs(data.birthdate).format("YYYY-MM-DD");
     data.sex = sex;
-    data.classroom = student.classroom;
+    data.classroom = selectedClassRoom;
     if (avatarFile !== undefined) data.avatar = avatarFile;
     for (const key in data) {
       const e = data as any;
@@ -106,7 +107,7 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
       formdata.append(key, el);
     }
     api
-      .post("/student", formdata)
+      .put("/student/" + student.id, formdata)
       .then(() => {
         setter(false);
       })
@@ -137,7 +138,7 @@ export const EditStudentModal: FunctionComponent<EditStudentModalProps> = ({
             <Select
               label="Class Room"
               onChange={({ value }) => {
-                setsex(value);
+                setselectedClassRoom(value);
               }}
               options={
                 classRooms &&

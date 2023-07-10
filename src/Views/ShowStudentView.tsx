@@ -1,23 +1,26 @@
 import { Student } from "@silva-school-frontend/models";
-import { Brand, Button, Card, Dropdown, DropdownElement, Flexbox, Header, Heading, Skeleton, Grid } from "@silva-school-frontend/ui";
+import { Brand, Button, Card, Dropdown, DropdownElement, Flexbox, Grid, Header, Heading, Skeleton } from "@silva-school-frontend/ui";
 import { AxiosError } from "axios";
 import { FunctionComponent, useContext, useEffect, useState } from "react";
-import { FiCalendar, FiChevronDown, FiEdit, FiMail, FiMapPin, FiPhone, FiTrash, FiUser, FiUserCheck } from "react-icons/fi";
-import { useParams } from "react-router-dom";
+import { FiCalendar, FiChevronDown, FiEdit, FiMapPin, FiPhone, FiTrash, FiUser, FiUserCheck } from "react-icons/fi";
+import { useNavigate, useParams } from "react-router-dom";
 import { ViewHeader } from "../Components/Elements/ViewHeader";
 import { StudentCard } from "../Components/StudentCard";
 import { AlertContext } from "../Contexts/AlertContext";
+import { ToastContext } from "../Contexts/ToastContext";
 import { ApiContext } from "../Contexts/ApiContext";
 import { EditStudentModal } from "../Modals/EditStudentModal";
 
 export const ShowStudentView: FunctionComponent = () => {
-  const { class_room_id, class_level_id, student_id } = useParams<{ class_room_id: string; class_level_id: string; student_id: string }>();
+  const { class_level_id, student_id } = useParams<{ class_room_id: string; class_level_id: string; student_id: string }>();
 
   const [editStudentModalStatus, seteditStudentModalStatus] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   const { api } = useContext(ApiContext);
   const [student, setstudent] = useState<Student>();
   const { pushAlert } = useContext(AlertContext);
+  const { pushToast } = useContext(ToastContext);
   useEffect(() => {
     api
       .get<Student>("/student/" + student_id)
@@ -36,7 +39,7 @@ export const ShowStudentView: FunctionComponent = () => {
           ),
         });
       });
-  }, [api, student_id, pushAlert]);
+  }, [api, student_id, pushAlert, editStudentModalStatus]);
   return (
     <div className="view view-showstudent">
       <ViewHeader title="Student Informations" />
@@ -61,7 +64,13 @@ export const ShowStudentView: FunctionComponent = () => {
                         return;
                       }),
                       new DropdownElement("#", FiTrash, <b style={{ color: "var(--red)" }}>Delete Student</b>, "button", () => {
-                        return;
+                        api.delete<Student>("/student/" + student_id).then(() => {
+                          pushToast({
+                            children: "Student has been delete",
+                            type: "success",
+                          });
+                          navigate("./../../");
+                        });
                       }),
                     ]}
                   >

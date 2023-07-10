@@ -1,6 +1,6 @@
 import React, { ChangeEvent, FunctionComponent, ReactNode, useEffect, useState } from "react";
 import { IconType } from "react-icons";
-import { Control, Controller, UseControllerProps, ControllerRenderProps, FieldValues } from "react-hook-form";
+import { Controller, UseControllerProps } from "react-hook-form";
 export type FieldProps = {
   label: ReactNode;
   type?: string;
@@ -76,7 +76,7 @@ export const Field: FunctionComponent<FieldProps> = ({
         </div>
       )}
       <div className={`input-container${RightIcon ? "" : " pr-3"}${LeftIcon ? "" : " pl-3"}`}>
-        <input disabled={disabled} type={type} value={value.toString()} onChange={handleChange} onFocus={handleFocus} onBlur={handleBlur} />
+        <input disabled={disabled} type={type} value={value?.toString()} onChange={handleChange} onFocus={handleFocus} onBlur={handleBlur} />
         <label className={`${LeftIcon ? "" : "no-left"}`}>{label}</label>
       </div>
       {RightIcon && (
