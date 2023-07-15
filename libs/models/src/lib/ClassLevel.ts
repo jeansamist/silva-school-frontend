@@ -1,3 +1,4 @@
+import { Payment } from "./Payment";
 import { ClassRoom } from "./ClassRoom";
 import { School } from "./School";
 
@@ -10,6 +11,7 @@ export class ClassLevel {
     public subjects?: [],
     public level?: number,
     public current_price?: number,
-    public new_student_price?: number
+    public new_student_price?: number,
+    public payment?: Payment | number | string
   ) {}
 }
