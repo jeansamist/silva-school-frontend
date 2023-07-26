@@ -44,7 +44,7 @@ export const Modal: FunctionComponent<ModalProps> = ({
   );
   const _footer = footer ? (
     <Footer className="sp-1">
-      <Flexbox className={"aic jcfe"}>
+      <Flexbox className={"aic jcfe"} gap>
         <Button type="danger" onClick={handleClose}>
           Cancel
         </Button>

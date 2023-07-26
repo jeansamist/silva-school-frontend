@@ -1,21 +1,20 @@
 import { FunctionComponent, useContext, useState } from "react";
 import { Outlet } from "react-router-dom";
 import { FiGrid, FiHome } from "react-icons/fi";
-import { Sidebar, SidebarLinkCategory, SidebarLink, Brand, Footer, Flexbox, Toast, Alert } from "@silva-school-frontend/ui";
+import { Sidebar, SidebarLinkCategory, SidebarLink, Brand, Footer, Flexbox, Toast, Alert, Modal, Button } from "@silva-school-frontend/ui";
 import { AuthContext } from "../Contexts/AuthContext";
 import { ToastContext } from "../Contexts/ToastContext";
 import { AlertContext } from "../Contexts/AlertContext";
+import { ConfirmContext } from "../Contexts/ConfirmContext";
 import { logo } from "../Components/Logo";
 import { useApi } from "@silva-school-frontend/hooks";
 import { FiUserPlus } from "react-icons/fi";
-import { FiPenTool } from "react-icons/fi";
-import { FiEdit } from "react-icons/fi";
-import { FiEdit2 } from "react-icons/fi";
 import { FiEdit3 } from "react-icons/fi";
 export const Index: FunctionComponent = () => {
   const auth = useContext(AuthContext);
   const { toasts } = useContext(ToastContext);
   const { alerts } = useContext(AlertContext);
+  const { confirms } = useContext(ConfirmContext);
   const [sidebarStatus, setsidebarStatus] = useState(true);
   const { BAKEND_URL } = useApi();
   const BRAND = new Brand(
@@ -60,6 +59,26 @@ export const Index: FunctionComponent = () => {
         ))}
         {alerts.map((alert, key) => (
           <Alert {...alert} key={key} />
+        ))}
+      </div>
+      <div className="modals-config">
+        {confirms.map((confirm, key) => (
+          <Modal
+            title="Confirm Action"
+            onClose={(status) => {
+              confirm.onClose !== undefined && confirm.onClose(status);
+              confirm.setter !== undefined && confirm.setter(status);
+            }}
+            isVisible={confirm.isVisible}
+            footer={
+              <Button type="warning" onClick={confirm.onConfirm}>
+                Confirm
+              </Button>
+            }
+            key={key}
+          >
+            {confirm.children}
+          </Modal>
         ))}
       </div>
     </div>
