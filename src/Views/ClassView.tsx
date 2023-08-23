@@ -16,7 +16,7 @@ import {
   tableDataSkeleton,
 } from "@silva-school-frontend/ui";
 import { AxiosError } from "axios";
-import { FunctionComponent, MouseEvent, useCallback, useContext, useEffect, useState } from "react";
+import { FunctionComponent, useCallback, useContext, useEffect, useState } from "react";
 import { FiChevronDown, FiHome, FiInfo, FiPercent, FiTrash, FiUsers } from "react-icons/fi";
 import { useNavigate, useParams } from "react-router-dom";
 import { ViewHeader } from "../Components/Elements/ViewHeader";
@@ -24,7 +24,6 @@ import { AlertContext } from "../Contexts/AlertContext";
 import { ApiContext } from "../Contexts/ApiContext";
 import { ToastContext } from "../Contexts/ToastContext";
 import { CreateClassRoomModal } from "../Modals/CreateClassRoomModal";
-import { ConfirmContext } from "../Contexts/ConfirmContext";
 
 export const ClassView: FunctionComponent = () => {
   const { class_level_id } = useParams<{ class_level_id: string }>();
@@ -33,11 +32,10 @@ export const ClassView: FunctionComponent = () => {
   const [class_level, setclass_level] = useState<ClassLevel>();
   const [classrooms, setclassrooms] = useState<ClassRoom[]>();
   const [createClassRoomModalStatus, setcreateClassRoomModalStatus] = useState(false);
-  const [deleteConfirmStatus, setdeleteConfirmStatus] = useState(false);
+  // const [deleteConfirmStatus, setdeleteConfirmStatus] = useState(false);
   const [rerend, setrerend] = useState(false);
   const { pushToast } = useContext(ToastContext);
   const { pushAlert } = useContext(AlertContext);
-  const { pushConfirm } = useContext(ConfirmContext);
 
   const createAutomaticalyClassroom = useCallback(() => {
     api.post("/class/" + class_level_id + "/classroom").then(() => {
@@ -135,10 +133,14 @@ export const ClassView: FunctionComponent = () => {
                       createAutomaticalyClassroom();
                     }),
                     new DropdownElement("#", FiTrash, <b style={{ color: "var(--red)" }}>Delete Classlevel</b>, "button", () => {
-                      pushConfirm({
-                        children: "attention",
-                        isVisible: deleteConfirmStatus,
-                        setter: setdeleteConfirmStatus,
+                      pushAlert({
+                        title: "Attention",
+                        type: "warning",
+                        children: (
+                          <>
+                            Would you like to delete this class level ? <br /> <Button type="warning">Yes, I want it</Button>
+                          </>
+                        ),
                       });
                     }),
                   ]}

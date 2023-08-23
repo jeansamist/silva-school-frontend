@@ -33,14 +33,14 @@ responsive;
 
 @layer global {
   :root {
-    --primary: #6f53f4;
-    --primaryOpact: #6e53f46b;
-    --primaryVariant1: #4b4bc4;
-    --primaryVariant1Opact: #4b4bc462;
+    --primary: #6d63ff;
+    --primaryOpact: rgba(109, 99, 255, 0.1);
+    --primaryVariant1: #6e63ff;
+    --primaryVariant1Opact: #6d63ff3d;
 
-    --color: #050506;
+    --color: #121c42;
     --colorLight: #fff;
-    --colorDark: #050506;
+    --colorDark: #121c42;
     --colorInfo: hsl(240, 1%, 65%);
 
     --documentBackground: #efeef3;
@@ -51,7 +51,7 @@ responsive;
     --cardBackground: #fff;
     --inputBackground: #fff;
     --border: hsl(240, 28%, 85%);
-    --shadow: hsla(247, 84%, 90%, 0.8);
+    --shadow: hsla(247, 84%, 90%, 0.5);
     --greyVariant: #eef0f3;
 
     --shadowDark: #0b08145d;
